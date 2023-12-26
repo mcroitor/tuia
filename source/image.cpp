@@ -1,3 +1,4 @@
+#include <fstream>
 #include "image.hpp"
 
 namespace usm::graphics
@@ -30,4 +31,18 @@ namespace usm::graphics
         return lines[0].size();
     }
 
+    void Image::Load(const std::string& filename){
+        std::ifstream fin(filename.c_str());
+        std::string line;
+        // TODO:
+    }
+    void Image::Save(const std::string& filename){
+        std::ofstream fout(filename.c_str());
+        for(uint32_t row = 0; row  < GetWidth(); ++row) {
+            for(uint32_t col = 0; col < GetHeight(); ++col) {
+                fout << lines[row][col] << " ";
+            }
+            fout << std::endl;
+        }
+    }
 }

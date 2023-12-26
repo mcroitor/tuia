@@ -17,7 +17,11 @@ namespace usm::graphics
         static ForegroundColor _foregroundColor;
         static BackgroundColor _backgroundColor;
 
+        static std::string ColorCode();
+
     public:
+        static std::string ColorCode(ForegroundColor fgColor, BackgroundColor bgColor);
+        static void Init();
         static void SetForegroundColor(const Color &foregroundColor);
         static void SetBackgroundColor(const Color &backgroundColor);
         static void SetForegroundColor(const ForegroundColor &foregroundColor);
@@ -32,6 +36,9 @@ namespace usm::graphics
         static void Draw(const Point &position, const Image &image);
         static void SetCursor(const Point &position);
         static Point GetScreenSize();
+
+        static void PutPoint(const Point& position, const Color& color);
+        static void PutPoint(const Point& position, const BackgroundColor& color);
     };
 }
 

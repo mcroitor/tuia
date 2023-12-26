@@ -83,6 +83,7 @@ namespace usm::graphics
             << std::setw(2) << std::setfill('0') << static_cast<int>(color.Red())
             << std::setw(2) << std::setfill('0') << static_cast<int>(color.Green())
             << std::setw(2) << std::setfill('0') << static_cast<int>(color.Blue());
+        out << std::dec;
         return out;
     }
 

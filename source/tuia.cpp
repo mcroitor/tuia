@@ -13,6 +13,28 @@ namespace usm::graphics
     BackgroundColor TUIA::_backgroundColor = BackgroundColor::Black;
     ForegroundColor TUIA::_foregroundColor = ForegroundColor::White;
 
+    std::string TUIA::ColorCode() {
+        return std::string("\x1b[") 
+            + std::to_string((int)_foregroundColor) 
+            + std::string(";") 
+            + std::to_string((int)_backgroundColor)
+            + std::string("m");
+    }
+
+    std::string TUIA::ColorCode(ForegroundColor fgColor, BackgroundColor bgColor) {
+        return std::string("\x1b[") 
+            + std::to_string((int)fgColor) 
+            + std::string(";") 
+            + std::to_string((int)bgColor)
+            + std::string("m");
+    }
+
+    void TUIA::Init() {
+        SetForegroundColor(ForegroundColor::White);
+        SetBackgroundColor(BackgroundColor::Black);
+        ClearScreen();
+    }
+
     void TUIA::SetForegroundColor(const ForegroundColor &foregroundColor){
         _foregroundColor = foregroundColor;
     }
@@ -39,7 +61,7 @@ namespace usm::graphics
 
     void TUIA::WriteLine(const Point &position, const std::string &line) {
         TUIA::SetCursor(position);
-        // TODO: implement this
+        std::cout << ColorCode() << line;
     }
 
     void TUIA::ClearLine(const Point &position, uint32_t nChars) {
@@ -65,11 +87,15 @@ namespace usm::graphics
     }
 
     void TUIA::Draw(const Point &position, const Image &image) {
-        // TODO: implement this
+        for(uint32_t col = 0; col < image.GetWidth(); ++col) {
+            for(uint32_t row = 0; row < image.GetHeight(); ++row) {
+                PutPoint({position.GetX() + col, position.GetY() + row}, image.GetColor({col, row}));
+            }
+        }
     }
 
     void TUIA::SetCursor(const Point & position) {
-        std::cout << "\033[" << position.GetX() << ";" << position.GetY() << "H";
+        std::cout << "\x1b[" << position.GetY() << ";" << position.GetX() << "H";
     }
 
     Point TUIA::GetScreenSize() {
@@ -80,5 +106,15 @@ namespace usm::graphics
         size_t rows = csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
 
         return Point(columns, rows);
+    }
+
+    void TUIA::PutPoint(const Point& position, const Color& color) {
+        PutPoint(position, ToBackgroundColor(color.ToTerminal()));
+    }
+
+    void TUIA::PutPoint(const Point& position, const BackgroundColor& color) {
+        SetCursor(position);
+
+        std::cout << ColorCode(ForegroundColor::White, color) << " " << ColorCode();
     }
 }

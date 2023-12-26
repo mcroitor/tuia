@@ -38,7 +38,17 @@ $(OBJ_DIR)/%.o: $(SOURCE_DIR)/%.cpp
 
 build: static shared
 
-test:
+test: compile-tests run-tests
+
+compile-tests:
+	${CXX} ${TESTS_DIR}/testcolor.cpp -o ${BUILD_DIR}/testcolor ${COMPILE_OPTIONS} -I ${SOURCE_DIR} -L ${BUILD_DIR} -l ${APPNAME}
+	${CXX} ${TESTS_DIR}/testtuia.cpp -o ${BUILD_DIR}/testtuia ${COMPILE_OPTIONS} -I ${SOURCE_DIR} -L ${BUILD_DIR} -l ${APPNAME}
+	${CXX} ${TESTS_DIR}/draw.cpp -o ${BUILD_DIR}/draw ${COMPILE_OPTIONS} -I ${SOURCE_DIR} -L ${BUILD_DIR} -l ${APPNAME}
+
+run-tests:
+	${BUILD_DIR}/testcolor
+	${BUILD_DIR}/testtuia
+#	${BUILD_DIR}/draw
 
 static:
 	${AR} rvs ${STATIC} ${OBJECTS}

@@ -1,11 +1,7 @@
-#include "../source/color.hpp"
+#include "color.hpp"
 #include "testframework.hpp"
 
 using usm::graphics::Color;
-
-void validate(bool expression, std::string pass = "pass", std::string fail = "fail") {
-    std::cout << (expression ? pass : fail) << std::endl;
-}
 
 bool test1() {
     std::cout << "[Color] default constructor" << std::endl;
@@ -72,6 +68,13 @@ bool test9() {
     return (c.Blue() == 0x56);
 }
 
+bool test10() {
+    std::cout << "[Color] optimize to terminal" << std::endl;
+    Color c {200, 100, 50};
+    Color result {170, 85, 85};
+    return (c.ToTerminal() == result);
+}
+
 int main() {
     usm::Test::Init();
 
@@ -84,6 +87,7 @@ int main() {
     usm::Test::Unit(test7);
     usm::Test::Unit(test8);
     usm::Test::Unit(test9);
+    usm::Test::Unit(test10);
 
     usm::Test::Result();
 

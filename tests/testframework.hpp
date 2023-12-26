@@ -48,7 +48,7 @@ namespace usm
 
         static void Result() {
             std::cout << "Test Result: " << std::endl;
-            std::cout << "\tPassed " << GetPassed() << std::endl;
+            std::cout << "\tPassed: " << GetPassed() << std::endl;
             std::cout << "\tTotal tests: " << GetTotal() << std::endl;
         }
     };

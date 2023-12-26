@@ -17,6 +17,8 @@ namespace usm::graphics
         void SetColor(const Point& point, const Color& color);
         uint32_t GetWidth() const;
         uint32_t GetHeight() const;
+        void Load(const std::string& filename);
+        void Save(const std::string& filename);
     };
 }
 #endif
