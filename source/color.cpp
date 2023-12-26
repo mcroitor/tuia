@@ -1,4 +1,5 @@
 #include <iomanip>
+#include <cmath>
 #include "color.hpp"
 
 namespace usm::graphics
@@ -61,9 +62,9 @@ namespace usm::graphics
     }
 
     Color Color::ToTerminal() const {
-        uint32_t red = std::round(Red() / 85.0f) * 85;
-        uint32_t green = std::round(Green() / 85.0f) * 85;
-        uint32_t blue = std::round(Blue() / 85.0f) * 85;
+        uint8_t red = static_cast<uint8_t>(std::round(Red() / 85.0f) * 85);
+        uint8_t green = static_cast<uint8_t>(std::round(Green() / 85.0f) * 85);
+        uint8_t blue = static_cast<uint8_t>(std::round(Blue() / 85.0f) * 85);
 
         return Color {red, green, blue};
     }
@@ -83,5 +84,15 @@ namespace usm::graphics
             << std::setw(2) << std::setfill('0') << static_cast<int>(color.Green())
             << std::setw(2) << std::setfill('0') << static_cast<int>(color.Blue());
         return out;
+    }
+
+    int operator <=> (const Color& left, const Color& right) {
+        if (left.Value() < right.Value()) {
+            return -1;
+        }
+        if (left.Value() > right.Value()) {
+            return 1;
+        }
+        return 0;
     }
 }

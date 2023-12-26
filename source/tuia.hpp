@@ -3,31 +3,35 @@
 
 #include <cstdint>
 #include <string>
-#include "color.hpp"
+#include "terminal_color.hpp"
 #include "image.hpp"
 #include "point.hpp"
 
 namespace usm::graphics
 {
+    using terminal::BackgroundColor;
+    using terminal::ForegroundColor;
 
-    class TUIA {
-        static terminal::ForegroundColor _foregroundColor;
-        static terminal::BackgroundColor _backgroundColor;
+    class TUIA
+    {
+        static ForegroundColor _foregroundColor;
+        static BackgroundColor _backgroundColor;
+
     public:
-        void SetForegroundColor(const Color& foregroundColor);
-        void SetBackgroundColor(const Color& backgroundColor);
-        void SetForegroundColor(const terminal::ForegroundColor& foregroundColor);
-        void SetBackgroundColor(const terminal::BackgroundColor& backgroundColor);
-        Color GetForegroundColor() const;
-        Color GetBackgroundColor() const;
-        void WriteLine(const Point& position, const std::string& line) const;
-        void ClearLine(const Point& position, uint32_t nChars) const;
-        void ClearBlock(const Point& leftTop, const Point& rightBottom) const;
-        void ClearBlock(const Point& position, uint32_t nChars, uint32_t nLines) const;
-        void ClearScreen() const;
-        void Draw(const Point& position, const Image& image) const;
-        void SetCursor(const Point& position) const;
-        Point GetScreenSize() const;
+        static void SetForegroundColor(const Color &foregroundColor);
+        static void SetBackgroundColor(const Color &backgroundColor);
+        static void SetForegroundColor(const ForegroundColor &foregroundColor);
+        static void SetBackgroundColor(const BackgroundColor &backgroundColor);
+        static Color GetForegroundColor();
+        static Color GetBackgroundColor();
+        static void WriteLine(const Point &position, const std::string &line);
+        static void ClearLine(const Point &position, uint32_t nChars);
+        static void ClearBlock(const Point &leftTop, const Point &rightBottom);
+        static void ClearBlock(const Point &position, uint32_t nChars, uint32_t nLines);
+        static void ClearScreen();
+        static void Draw(const Point &position, const Image &image);
+        static void SetCursor(const Point &position);
+        static Point GetScreenSize();
     };
 }
 

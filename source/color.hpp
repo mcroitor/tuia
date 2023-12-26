@@ -145,6 +145,8 @@ namespace usm::graphics
      * @return std::ostream& 
      */
     std::ostream &operator<<(std::ostream &out, const Color &color);
+
+    int operator <=> (const Color& left, const Color& right);
 }
 
 #endif

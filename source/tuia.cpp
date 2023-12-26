@@ -3,7 +3,15 @@
 
 namespace usm::graphics
 {
-    using namespace terminal;
+    using terminal::BackgroundColor;
+    using terminal::ForegroundColor;
+    using terminal::ToBackgroundColor;
+    using terminal::ToForegroundColor;
+    using terminal::FromBackgroundColor;
+    using terminal::FromForegroundColor;
+
+    BackgroundColor TUIA::_backgroundColor = BackgroundColor::Black;
+    ForegroundColor TUIA::_foregroundColor = ForegroundColor::White;
 
     void TUIA::SetForegroundColor(const ForegroundColor &foregroundColor){
         _foregroundColor = foregroundColor;
@@ -21,50 +29,50 @@ namespace usm::graphics
         _backgroundColor = ToBackgroundColor(backgroundColor);
     }
 
-    Color TUIA::GetForegroundColor() const {
+    Color TUIA::GetForegroundColor() {
         return FromForegroundColor(_foregroundColor);
     }
 
-    Color TUIA::GetBackgroundColor() const{
+    Color TUIA::GetBackgroundColor() {
         return FromBackgroundColor(_backgroundColor);
     }
 
-    void TUIA::WriteLine(const Point &position, const std::string &line) const{
+    void TUIA::WriteLine(const Point &position, const std::string &line) {
         TUIA::SetCursor(position);
         // TODO: implement this
     }
 
-    void TUIA::ClearLine(const Point &position, uint32_t nChars) const{
+    void TUIA::ClearLine(const Point &position, uint32_t nChars) {
         std::string emptyLine(nChars, ' ');
         TUIA::WriteLine(position, emptyLine);
     }
 
-    void TUIA::ClearBlock(const Point &leftTop, const Point &rightBottom) const{
+    void TUIA::ClearBlock(const Point &leftTop, const Point &rightBottom) {
         size_t nChars = rightBottom.GetX() - leftTop.GetX();
         size_t nLines = rightBottom.GetY() - leftTop.GetY();
         TUIA::ClearBlock(leftTop, nChars, nLines);
     }
 
-    void TUIA::ClearBlock(const Point &position, uint32_t nChars, uint32_t nLines) const{
-        for(size_t i = 0; i < nLines; ++i){
+    void TUIA::ClearBlock(const Point &position, uint32_t nChars, uint32_t nLines) {
+        for(uint32_t i = 0; i < nLines; ++i){
             Point pos {position.GetX(), position.GetY() + i};
             TUIA::ClearLine(pos, nChars);
         }
     }
 
-    void TUIA::ClearScreen() const {
+    void TUIA::ClearScreen() {
         TUIA::ClearBlock(Point(0, 0), TUIA::GetScreenSize());
     }
 
-    void TUIA::Draw(const Point &position, const Image &image) const{
+    void TUIA::Draw(const Point &position, const Image &image) {
         // TODO: implement this
     }
 
-    void TUIA::SetCursor(const Point & position) const{
+    void TUIA::SetCursor(const Point & position) {
         std::cout << "\033[" << position.GetX() << ";" << position.GetY() << "H";
     }
 
-    Point TUIA::GetScreenSize() const {
+    Point TUIA::GetScreenSize() {
         CONSOLE_SCREEN_BUFFER_INFO csbi;
   
         GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
