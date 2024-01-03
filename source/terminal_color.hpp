@@ -7,6 +7,9 @@ namespace usm::graphics::terminal
 {
     using usm::graphics::Color;
     
+    /**
+     * @brief names and ASCII codes for foreground color
+    */
     enum class ForegroundColor
     {
         Black = 30,
@@ -28,6 +31,9 @@ namespace usm::graphics::terminal
         BrightWhite,
     };
 
+    /**
+     * @brief names and ASCII codes for background color
+    */
     enum class BackgroundColor
     {
         Black = 40,
@@ -49,9 +55,29 @@ namespace usm::graphics::terminal
         BrightWhite,
     };
 
+    /**
+     * @brief Convert ForegroundColor to Color
+     * @param color Foreground Color
+     * @return Color
+     */
     Color FromForegroundColor(ForegroundColor color);
+    /**
+     * @brief Convert BackgroundColor to Color
+     * @param color Background Color
+     * @return Color
+     */
     Color FromBackgroundColor(BackgroundColor color);
+    /**
+     * @brief Convert Color to ForegroundColor
+     * @param color RGB Color
+     * @return ForegroundColor
+     */
     ForegroundColor ToForegroundColor(const Color &color);
+    /**
+     * @brief Convert Color to BackgroundColor
+     * @param color RGB Color
+     * @return BackgroundColor
+     */
     BackgroundColor ToBackgroundColor(const Color &color);
 }
 

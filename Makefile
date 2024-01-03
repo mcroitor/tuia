@@ -18,6 +18,14 @@ STATIC = ${BUILD_DIR}/lib${APPNAME}.a
 
 all: compile build test
 
+help:
+	@echo "make\t\t- compile, build and test"
+	@echo "make help\t- show this help message"
+	@echo "make env\t- print environment"
+	@echo "make compile\t- compile libraries"
+	@echo "make build\t- build libraries"
+	@echo "make clean\t- clean project"
+
 env:
 	@echo "SOURCE_DIR = ${SOURCE_DIR}"
 	@echo "OBJ_DIR    = ${OBJ_DIR}"
@@ -26,12 +34,17 @@ env:
 	@echo "STATIC     = ${STATIC}"
 	@echo "SHARED     = ${SHARED}"
 
-prepare:
+${OBJ_DIR}: 
 	@echo "create necessary directories"
-	mkdir -p ${OBJ_DIR} ${BUILD_DIR}
+	mkdir -p ${OBJ_DIR}
 	@echo "done"
 
-compile: ${OBJECTS}
+${BUILD_DIR}: 
+	@echo "create necessary directories"
+	mkdir -p ${BUILD_DIR}
+	@echo "done"
+
+compile: ${OBJ_DIR} ${BUILD_DIR} ${OBJECTS}
 
 $(OBJ_DIR)/%.o: $(SOURCE_DIR)/%.cpp
 	$(CXX) $(COMPILE_OPTIONS) -c -o $@ $<
