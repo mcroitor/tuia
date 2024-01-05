@@ -3,6 +3,7 @@
 
 #include <cstdint>
 #include <iostream>
+#include <string>
 
 namespace usm::graphics
 {
@@ -124,8 +125,16 @@ namespace usm::graphics
          * @return uint32_t 
          */
         uint32_t Value() const;
-
+        /**
+         * @brief try to convert Color to the ASCII compatible.
+         * @return Color with Red, Green and Blue channels rounded to the 0, 85, 170, 255 values
+        */
         Color ToTerminal() const;
+        /**
+         * @brief return string reprezentation of colors (as HEX)
+         * @return std::string
+         */
+        std::string ToString() const;
     };
 
     /**

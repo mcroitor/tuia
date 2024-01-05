@@ -69,6 +69,12 @@ namespace usm::graphics
         return Color {red, green, blue};
     }
 
+    std::string Color::ToString() const {
+        std::stringstream stream;
+        stream << std::setfill ('0') << std::setw(sizeof(_value)*2) << std::hex << _value;
+        return stream.str();
+    }
+
     std::istream &operator>>(std::istream &in, Color &color)
     {
         int tmp;

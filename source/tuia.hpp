@@ -119,6 +119,10 @@ namespace usm::graphics
          * @param color color of the pixel in BackgroundColor format
          */
         static void PutPoint(const Point& position, const BackgroundColor& color);
+        /**
+         * @brief Reset screen colors. Background to Black, text to White.
+        */
+        static void ResetColors();
     };
 }
 

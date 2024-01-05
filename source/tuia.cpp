@@ -30,9 +30,14 @@ namespace usm::graphics
     }
 
     void TUIA::Init() {
+        ResetColors();
+        ClearScreen();
+    }
+
+    void TUIA::ResetColors(){
         SetForegroundColor(ForegroundColor::White);
         SetBackgroundColor(BackgroundColor::Black);
-        ClearScreen();
+        std::cout << ColorCode();
     }
 
     void TUIA::SetForegroundColor(const ForegroundColor &foregroundColor){
