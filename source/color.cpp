@@ -1,5 +1,6 @@
 #include <iomanip>
 #include <cmath>
+#include <sstream>
 #include "color.hpp"
 
 namespace usm::graphics
@@ -93,13 +94,7 @@ namespace usm::graphics
         return out;
     }
 
-    int operator <=> (const Color& left, const Color& right) {
-        if (left.Value() < right.Value()) {
-            return -1;
-        }
-        if (left.Value() > right.Value()) {
-            return 1;
-        }
-        return 0;
+    bool operator < (const Color& left, const Color& right) {
+        return (left.Value() < right.Value());
     }
 }

@@ -14,7 +14,7 @@ namespace usm::graphics
     ForegroundColor TUIA::_foregroundColor = ForegroundColor::White;
 
     std::string TUIA::ColorCode() {
-        return std::string("\x1b[") 
+        return std::string("\033[") 
             + std::to_string((int)_foregroundColor) 
             + std::string(";") 
             + std::to_string((int)_backgroundColor)
@@ -22,7 +22,7 @@ namespace usm::graphics
     }
 
     std::string TUIA::ColorCode(ForegroundColor fgColor, BackgroundColor bgColor) {
-        return std::string("\x1b[") 
+        return std::string("\033[") 
             + std::to_string((int)fgColor) 
             + std::string(";") 
             + std::to_string((int)bgColor)
@@ -37,7 +37,6 @@ namespace usm::graphics
     void TUIA::ResetColors(){
         SetForegroundColor(ForegroundColor::White);
         SetBackgroundColor(BackgroundColor::Black);
-        std::cout << ColorCode();
     }
 
     void TUIA::SetForegroundColor(const ForegroundColor &foregroundColor){
@@ -99,8 +98,15 @@ namespace usm::graphics
         }
     }
 
+    void TUIA::DrawBlock(const Point &leftTop, uint32_t nChars, uint32_t nLines, const Color &colorBackground) {
+        Color color = GetBackgroundColor();
+        SetBackgroundColor(colorBackground);
+        ClearBlock(leftTop, nChars, nLines);
+        SetBackgroundColor(color);
+    }
+
     void TUIA::SetCursor(const Point & position) {
-        std::cout << "\x1b[" << position.GetY() << ";" << position.GetX() << "H";
+        std::cout << "\033[" << position.GetY() << ";" << position.GetX() << "H";
     }
 
     Point TUIA::GetScreenSize() {

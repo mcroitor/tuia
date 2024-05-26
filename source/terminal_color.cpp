@@ -70,7 +70,7 @@ namespace usm::graphics::terminal
             {Color{255, 255, 255}, ForegroundColor::BrightWhite},
         };
         Color terminal = color.ToTerminal();
-        if (map.contains(terminal))
+        if (map.count(terminal) > 0)
         {
             return map.at(terminal);
         }
@@ -98,7 +98,7 @@ namespace usm::graphics::terminal
             {Color{255, 255, 255}, BackgroundColor::BrightWhite},
         };
         Color terminal = color.ToTerminal();
-        if (map.contains(terminal))
+        if (map.count(terminal) > 0)
         {
             return map.at(terminal);
         }

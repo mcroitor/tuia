@@ -97,6 +97,13 @@ namespace usm::graphics
          */
         static void Draw(const Point &position, const Image &image);
         /**
+         * @brief Draw block of screen.
+         * @param leftTop left top point of screen
+         * @param rightBottom right bottom point of screen
+         * @param colorBackground color of background
+         */
+        static void DrawBlock(const Point &leftTop, uint32_t nChars, uint32_t nLines, const Color &colorBackground);
+        /**
          * @brief Set cursor to the specified point.
          * @param position point of screen
          */

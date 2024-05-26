@@ -155,7 +155,7 @@ namespace usm::graphics
      */
     std::ostream &operator<<(std::ostream &out, const Color &color);
 
-    int operator <=> (const Color& left, const Color& right);
+    bool operator < (const Color& left, const Color& right);
 }
 
 #endif

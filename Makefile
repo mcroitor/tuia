@@ -16,15 +16,17 @@ APPNAME = tuia
 SHARED = ${BUILD_DIR}/${APPNAME}.dll
 STATIC = ${BUILD_DIR}/lib${APPNAME}.a
 
+help:
+	@echo "make           - compile, build and test"
+	@echo "make help      - show this help message"
+	@echo "make env       - print environment"
+	@echo "make compile   - compile libraries"
+	@echo "make build     - build libraries"
+	@echo "make clean     - clean project"
+
 all: compile build test
 
-help:
-	@echo "make\t\t- compile, build and test"
-	@echo "make help\t- show this help message"
-	@echo "make env\t- print environment"
-	@echo "make compile\t- compile libraries"
-	@echo "make build\t- build libraries"
-	@echo "make clean\t- clean project"
+rebuild: clean all
 
 env:
 	@echo "SOURCE_DIR = ${SOURCE_DIR}"
@@ -57,6 +59,8 @@ compile-tests:
 	${CXX} ${TESTS_DIR}/testcolor.cpp -o ${BUILD_DIR}/testcolor ${COMPILE_OPTIONS} -I ${SOURCE_DIR} -L ${BUILD_DIR} -l ${APPNAME}
 	${CXX} ${TESTS_DIR}/testtuia.cpp -o ${BUILD_DIR}/testtuia ${COMPILE_OPTIONS} -I ${SOURCE_DIR} -L ${BUILD_DIR} -l ${APPNAME}
 	${CXX} ${TESTS_DIR}/draw.cpp -o ${BUILD_DIR}/draw ${COMPILE_OPTIONS} -I ${SOURCE_DIR} -L ${BUILD_DIR} -l ${APPNAME}
+	${CXX} ${TESTS_DIR}/screen.cpp -o ${BUILD_DIR}/screen ${COMPILE_OPTIONS} -I ${SOURCE_DIR} -L ${BUILD_DIR} -l ${APPNAME}
+	${CXX} ${TESTS_DIR}/ui.cpp -o ${BUILD_DIR}/ui ${COMPILE_OPTIONS} -I ${SOURCE_DIR} -L ${BUILD_DIR} -l ${APPNAME}
 
 run-tests:
 	${BUILD_DIR}/testcolor
