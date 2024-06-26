@@ -1,4 +1,5 @@
 #include <fstream>
+#include <sstream>
 #include "image.hpp"
 
 namespace usm::graphics
@@ -13,12 +14,28 @@ namespace usm::graphics
 
     Color Image::GetColor(const Point &point) const
     {
-        return lines[point.GetX()][point.GetY()];
+        return lines[point.X()][point.Y()];
     }
 
     void Image::SetColor(const Point &point, const Color &color)
     {
-        lines[point.GetX()][point.GetY()] = color;
+        lines[point.X()][point.Y()] = color;
+    }
+
+    void Image::DrawLine(const Point &start, const Point &end, const Color &color)
+    {
+        int dx = end.X() - start.X();
+        int dy = end.Y() - start.Y();
+        int steps = std::max(std::abs(dx), std::abs(dy));
+        float xInc = dx / (float)steps;
+        float yInc = dy / (float)steps;
+        float x = start.X();
+        float y = start.Y();
+        for(int i = 0; i < steps; ++i){
+            SetColor({(uint32_t)x, (uint32_t)y}, color);
+            x += xInc;
+            y += yInc;
+        }
     }
     
     uint32_t Image::GetWidth() const
@@ -34,7 +51,17 @@ namespace usm::graphics
     void Image::Load(const std::string& filename){
         std::ifstream fin(filename.c_str());
         std::string line;
-        // TODO:
+        uint32_t row = 0;
+        while(std::getline(fin, line)){
+            std::istringstream iss(line);
+            uint32_t col = 0;
+            Color color;
+            while(iss >> color){
+                SetColor({col, row}, color);
+                ++col;
+            }
+            ++row;
+        }
     }
     
     void Image::Save(const std::string& filename) const{

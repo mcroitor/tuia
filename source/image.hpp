@@ -33,6 +33,13 @@ namespace usm::graphics
          */
         void SetColor(const Point& point, const Color& color);
         /**
+         * @brief Draw a line between two points.
+         * @param Point start
+         * @param Point end
+         * @param Color color
+         */
+        void DrawLine(const Point& start, const Point& end, const Color& color);
+        /**
          * @brief Return width of image
          * @return uint32_t
          */

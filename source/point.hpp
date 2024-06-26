@@ -26,12 +26,12 @@ namespace usm::graphics
          * @brief get X value
          * @return uint32_t
          */
-        uint32_t GetX() const;
+        uint32_t X() const;
         /**
          * @brief get y value
          * @return uint32_t
          */
-        uint32_t GetY() const;
+        uint32_t Y() const;
         /**
          * @brief copy operator
          * @param point left value object

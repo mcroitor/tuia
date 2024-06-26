@@ -25,8 +25,8 @@ int main(){
     // Dialog box details
     const int dialogWidth = 40;
     const int dialogHeight = 10;
-    const int dialogX = (TUIA::GetScreenSize().GetX() - dialogWidth) / 2;
-    const int dialogY = (TUIA::GetScreenSize().GetY() - dialogHeight) / 2;
+    const int dialogX = (TUIA::GetScreenSize().X() - dialogWidth) / 2;
+    const int dialogY = (TUIA::GetScreenSize().Y() - dialogHeight) / 2;
     const Color dialogColorBackground = Color(0, 0, 170);
     const Color dialogColorBorder = Color(255, 255, 255);
     const Color dialogColorText = Color(255, 255, 255);
