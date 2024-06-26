@@ -30,8 +30,13 @@ namespace usm::graphics
     }
 
     void TUIA::Init() {
+        std::ios_base::sync_with_stdio(false);
         ResetColors();
         ClearScreen();
+    }
+
+    void TUIA::Flush() {
+        std::cout << std::flush;
     }
 
     void TUIA::ResetColors(){
@@ -74,14 +79,14 @@ namespace usm::graphics
     }
 
     void TUIA::ClearBlock(const Point &leftTop, const Point &rightBottom) {
-        size_t nChars = rightBottom.GetX() - leftTop.GetX();
-        size_t nLines = rightBottom.GetY() - leftTop.GetY();
+        size_t nChars = rightBottom.X() - leftTop.X();
+        size_t nLines = rightBottom.Y() - leftTop.Y();
         TUIA::ClearBlock(leftTop, nChars, nLines);
     }
 
     void TUIA::ClearBlock(const Point &position, uint32_t nChars, uint32_t nLines) {
         for(uint32_t i = 0; i < nLines; ++i){
-            Point pos {position.GetX(), position.GetY() + i};
+            Point pos {position.X(), position.Y() + i};
             TUIA::ClearLine(pos, nChars);
         }
     }
@@ -93,7 +98,7 @@ namespace usm::graphics
     void TUIA::Draw(const Point &position, const Image &image) {
         for(uint32_t col = 0; col < image.GetWidth(); ++col) {
             for(uint32_t row = 0; row < image.GetHeight(); ++row) {
-                PutPoint({position.GetX() + col, position.GetY() + row}, image.GetColor({col, row}));
+                PutPoint({position.X() + col, position.Y() + row}, image.GetColor({col, row}).ToTerminal());
             }
         }
     }
@@ -106,7 +111,7 @@ namespace usm::graphics
     }
 
     void TUIA::SetCursor(const Point & position) {
-        std::cout << "\033[" << position.GetY() << ";" << position.GetX() << "H";
+        std::cout << "\033[" << position.Y() << ";" << position.X() << "H";
     }
 
     Point TUIA::GetScreenSize() {

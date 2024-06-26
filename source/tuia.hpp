@@ -32,6 +32,10 @@ namespace usm::graphics
          */
         static void Init();
         /**
+         * @brief Flush output buffer.
+         */
+        static void Flush();
+        /**
          * @brief Set foreground color for text.
          * @param Color will be converted to the appropiate ForegroundColor
          */
