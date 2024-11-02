@@ -60,6 +60,8 @@ compile-tests:
 	${CXX} ${TESTS_DIR}/testtuia.cpp -o ${BUILD_DIR}/testtuia ${COMPILE_OPTIONS} -I ${SOURCE_DIR} -L ${BUILD_DIR} -l ${APPNAME}
 	${CXX} ${TESTS_DIR}/draw.cpp -o ${BUILD_DIR}/draw ${COMPILE_OPTIONS} -I ${SOURCE_DIR} -L ${BUILD_DIR} -l ${APPNAME}
 	${CXX} ${TESTS_DIR}/screen.cpp -o ${BUILD_DIR}/screen ${COMPILE_OPTIONS} -I ${SOURCE_DIR} -L ${BUILD_DIR} -l ${APPNAME}
+	${CXX} ${TESTS_DIR}/change_screens.cpp -o ${BUILD_DIR}/change_screens ${COMPILE_OPTIONS} -I ${SOURCE_DIR} -L ${BUILD_DIR} -l ${APPNAME}
+	${CXX} ${TESTS_DIR}/text_image.cpp -o ${BUILD_DIR}/text_image ${COMPILE_OPTIONS} -I ${SOURCE_DIR} -L ${BUILD_DIR} -l ${APPNAME}
 	${CXX} ${TESTS_DIR}/ui.cpp -o ${BUILD_DIR}/ui ${COMPILE_OPTIONS} -I ${SOURCE_DIR} -L ${BUILD_DIR} -l ${APPNAME}
 
 run-tests:

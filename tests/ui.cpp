@@ -6,18 +6,75 @@
  * - Dialog color background: Blue
  * - Dialog color border: White
  * - Dialog color text: White
- * 
+ *
  * - Title: "Dialog Box"
  * - Message: "This is a dialog box."
  * - Button: "OK"
  */
 #include "tuia.hpp"
 
-using usm::graphics::TUIA;
+using usm::graphics::Point;
 using usm::graphics::Color;
+using usm::graphics::BackgroundColor;
+using usm::graphics::ForegroundColor;
+using usm::graphics::terminal::FromBackgroundColor;
 using usm::graphics::Image;
+using usm::graphics::TUIA;
 
-int main(){
+class DialogBox
+{
+    Point position;
+    std::string title;
+    std::string message;
+    std::string button;
+    uint32_t width;
+    uint32_t height;
+
+    void DrawBox(){
+        TUIA::SetBackgroundColor(BackgroundColor::White);
+        TUIA::ClearBlock(position, width, height);
+    }
+    void DrawTitle(){
+        TUIA::SetBackgroundColor(BackgroundColor::Blue);
+        TUIA::SetForegroundColor(ForegroundColor::BrightWhite);
+        Point titlePosition {position.GetX() + 1, position.GetY() + 1};
+        TUIA::ClearBlock(titlePosition, width - 2, 1);
+        TUIA::WriteLine(titlePosition, title);
+    }
+    void DrawMessage(){
+        Point messagePosition {
+            position.GetX() + (uint32_t)message.size() / 2 + 1, 
+            position.GetY() + height / 2};
+        TUIA::SetBackgroundColor(BackgroundColor::White);
+        TUIA::SetForegroundColor(ForegroundColor::Black);
+        TUIA::WriteLine(messagePosition, message);
+    }
+    void DrawButton(){
+
+        Point buttonPosition {
+            position.GetX() + width / 2 - (uint32_t)button.size() / 2, 
+            position.GetY() + height - 2};
+        TUIA::SetBackgroundColor(BackgroundColor::BrightWhite);
+        TUIA::SetForegroundColor(ForegroundColor::Black);
+        TUIA::WriteLine(buttonPosition, button);
+    }
+public:
+    DialogBox(int width, int height, const std::string &title) 
+        : width(width), height(height), title(title), message {}, button {"OK"} {}
+    void SetMessage(const std::string &message) { this->message = message; }
+    void SetButtonText(const std::string &button) { this->button = button; }
+    void SetTitle(const std::string &title) { this->title = title; }
+
+    void Show() {
+        DrawBox();
+        DrawTitle();
+        DrawMessage();
+        DrawButton();
+    }
+};
+
+int main()
+{
     TUIA::Init();
     TUIA::SetBackgroundColor(usm::graphics::terminal::BackgroundColor::Black);
     TUIA::ClearScreen();
@@ -25,38 +82,11 @@ int main(){
     // Dialog box details
     const int dialogWidth = 40;
     const int dialogHeight = 10;
-    const int dialogX = (TUIA::GetScreenSize().GetX() - dialogWidth) / 2;
-    const int dialogY = (TUIA::GetScreenSize().GetY() - dialogHeight) / 2;
-    const Color dialogColorBackground = Color(0, 0, 170);
-    const Color dialogColorBorder = Color(255, 255, 255);
-    const Color dialogColorText = Color(255, 255, 255);
 
-    // Title
-    const std::string title = "Dialog Box";
-    const int titleX = dialogX + (dialogWidth - title.size()) / 2;
-    const int titleY = dialogY + 1;
+    DialogBox dialog(dialogWidth, dialogHeight, "Dialog Box");
+    dialog.SetMessage("This is a dialog box.");
+    dialog.SetButtonText("OK");
 
-    // Message
-    const std::string message = "This is a dialog box.";
-    const int messageX = dialogX + (dialogWidth - message.size()) / 2;
-    const int messageY = dialogY + 3;
-
-    // Button
-    const std::string button = "OK";
-    const int buttonX = dialogX + (dialogWidth - button.size()) / 2;
-    const int buttonY = dialogY + dialogHeight - 3;
-
-    // Draw dialog box
-    TUIA::DrawBlock({dialogX, dialogY}, dialogWidth, dialogHeight, dialogColorBackground);
-
-    // Draw title
-    TUIA::WriteLine({titleX, titleY}, title);
-
-    // Draw message
-    TUIA::WriteLine({messageX, messageY}, message);
-
-    // Draw button
-    TUIA::WriteLine({buttonX, buttonY}, button);
-
+    dialog.Show();
     return 0;
 }

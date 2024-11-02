@@ -5,6 +5,7 @@
 #include <string>
 #include "terminal_color.hpp"
 #include "image.hpp"
+#include "text_image.hpp"
 #include "point.hpp"
 
 namespace usm::graphics
@@ -18,7 +19,7 @@ namespace usm::graphics
         static BackgroundColor _backgroundColor;
 
         static std::string ColorCode();
-
+        static std::string PointCode(const Point& position);
     public:
         /**
          * @brief Create a string representation (ASCII code) for specified colors.
@@ -31,6 +32,16 @@ namespace usm::graphics
          * @brief Set initial values for background and foreground colors.
          */
         static void Init();
+        /**
+         * @brief Set full screen mode.
+         */
+        static void FullScreen();
+        /**
+         * @brief Set window size.
+         * @param width
+         * @param height
+         */
+        static void SetWindowSize(uint32_t width, uint32_t height);
         /**
          * @brief Set foreground color for text.
          * @param Color will be converted to the appropiate ForegroundColor
@@ -96,6 +107,8 @@ namespace usm::graphics
          * @param image
          */
         static void Draw(const Point &position, const Image &image);
+        static void Draw(const Image &image);
+        static void Draw(const TextImage &image);
         /**
          * @brief Draw block of screen.
          * @param leftTop left top point of screen
@@ -109,11 +122,15 @@ namespace usm::graphics
          */
         static void SetCursor(const Point &position);
         /**
+         * @brief Get cursor position.
+         * @return cursor position
+         */
+        static Point GetCursor();
+        /**
          * @brief Return Screen size as point. X value == width, Y value == height
          * @return Point
          */
         static Point GetScreenSize();
-
         /**
          * @brief Set a color point on the screen.
          * @param position point on the screen

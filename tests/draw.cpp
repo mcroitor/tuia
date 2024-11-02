@@ -3,22 +3,47 @@
 using usm::graphics::TUIA;
 using usm::graphics::Color;
 using usm::graphics::Image;
+using usm::graphics::Point;
+using usm::graphics::BackgroundColor;
 
 int main() {
     TUIA::Init();
-//    TUIA::SetBackgroundColor(usm::graphics::terminal::BackgroundColor::Black);
-//    TUIA::ClearBlock({3, 3}, {10, 10});
-//    TUIA::SetBackgroundColor(usm::graphics::terminal::BackgroundColor::Blue);
-//    TUIA::ClearBlock({4, 4}, {6, 6});
-//    TUIA::PutPoint({1, 1}, usm::graphics::terminal::BackgroundColor::BrightGreen);
-//    TUIA::PutPoint({10, 3}, usm::graphics::terminal::BackgroundColor::Blue);
-//    TUIA::PutPoint({11, 4}, usm::graphics::terminal::BackgroundColor::White);
     Image img {10, 10};
 
-    img.SetColor({1, 2}, Color(255, 0, 0));
-    img.SetColor({2, 2}, Color(170, 85, 0));
-    img.SetColor({3, 2}, Color(0, 0, 170));
-    TUIA::Draw({2, 2}, img);
+    for(uint32_t i = 0; i < img.GetWidth(); i++) {
+        for(uint32_t j = 0; j < img.GetHeight(); j++) {
+            img.SetColor({i, j}, Color(255, 255, 255));
+        }
+    }
 
+    std::vector<BackgroundColor> colors = {
+        BackgroundColor::Black,
+        BackgroundColor::Red,
+        BackgroundColor::Green,
+        BackgroundColor::Yellow,
+        BackgroundColor::Blue,
+        BackgroundColor::Magenta,
+        BackgroundColor::Cyan,
+        BackgroundColor::White,
+        BackgroundColor::BrightBlack,
+        BackgroundColor::BrightRed,
+        BackgroundColor::BrightGreen,
+        BackgroundColor::BrightYellow,
+        BackgroundColor::BrightBlue,
+        BackgroundColor::BrightMagenta,
+        BackgroundColor::BrightCyan,
+        BackgroundColor::BrightWhite
+    };
+
+    for(uint32_t i = 0; i < img.GetWidth(); i++) {
+        for(uint32_t j = 0; j < img.GetHeight(); j++) {
+            auto colorIndex = rand() % colors.size();
+            BackgroundColor bgColor = colors[colorIndex];
+            Color color = usm::graphics::terminal::FromBackgroundColor(bgColor);
+            img.SetColor({i, j}, color);
+        }
+    }
+    TUIA::Draw({2, 2}, img);
+    
     return 0;
 }
