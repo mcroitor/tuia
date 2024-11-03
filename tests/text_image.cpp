@@ -27,9 +27,9 @@ void SetCar(TextImage &textImage, const Point &position)
         "                                         `._.'.'                      ",
     };
 
-    for (uint32_t i = 0; i < 16; i++)
+    for (int i = 0; i < 16; i++)
     {
-        for(uint32_t j = 0; j < 70; j++)
+        for(int j = 0; j < 70; j++)
         {
             textImage.SetSymbol({position.GetX() + j, position.GetY() + i}, car[i][j]);
         }
@@ -44,13 +44,13 @@ int main()
     auto screenSize = TUIA::GetScreenSize();
     TextImage textImage(screenSize.GetX()-1, screenSize.GetY()-2);
 
-    for (uint32_t i = 1; i < textImage.GetWidth(); i++)
+    for (int i = 1; i < textImage.GetWidth(); i++)
     {
         textImage.SetSymbol({i, 0}, '-');
         textImage.SetSymbol({i, textImage.GetHeight() - 1}, '-');
     }
 
-    for (uint32_t i = 1; i < textImage.GetHeight(); i++)
+    for (int i = 1; i < textImage.GetHeight(); i++)
     {
         textImage.SetSymbol({0, i}, '|');
         textImage.SetSymbol({textImage.GetWidth() - 1, i}, '|');
@@ -58,12 +58,12 @@ int main()
 
     std::vector<TextImage> slides(30, textImage);
 
-    for (uint32_t i = 0; i < slides.size(); i++)
+    for (int i = 0; i < slides.size(); i++)
     {
         SetCar(slides[i], {i+2, 10});
     }
 
-    for (uint32_t i = 0; i < slides.size(); i++)
+    for (int i = 0; i < slides.size(); i++)
     {
         TUIA::Draw(textImage);
         TUIA::Draw(slides[i]);

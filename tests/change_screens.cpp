@@ -16,7 +16,7 @@ int main() {
     std::vector<Image> images(20, Image(20, 80, BackgroundColor::BrightBlack));
 
     for(int i = 0; i < images.size(); ++i){
-        images[i].SetColor({(uint32_t)i, (uint32_t)i}, Color(255, 255, 255));
+        images[i].SetColor({i, i}, Color(255, 255, 255));
     }
 
     for(int i = 0; i < images.size(); ++i){

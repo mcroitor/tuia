@@ -19,10 +19,10 @@ namespace usm::graphics::terminal
         std::vector<std::vector<Symbol>> symbols;
 
     public:
-        TextImage(size_t width, size_t height, const Symbol &symbol = ' ');
+        TextImage(int width, int height, const Symbol &symbol = ' ');
         TextImage(const TextImage &image);
-        uint32_t GetWidth() const;
-        uint32_t GetHeight() const;
+        int GetWidth() const;
+        int GetHeight() const;
         Symbol GetSymbol(const Point &point) const;
         void SetSymbol(const Point &point, const Symbol &symbol);
         void Load(const std::string &filename);

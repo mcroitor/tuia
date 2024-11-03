@@ -27,8 +27,8 @@ class DialogBox
     std::string title;
     std::string message;
     std::string button;
-    uint32_t width;
-    uint32_t height;
+    int width;
+    int height;
 
     void DrawBox(){
         TUIA::SetBackgroundColor(BackgroundColor::White);
@@ -43,7 +43,7 @@ class DialogBox
     }
     void DrawMessage(){
         Point messagePosition {
-            position.GetX() + (uint32_t)message.size() / 2 + 1, 
+            position.GetX() + (int)message.size() / 2 + 1, 
             position.GetY() + height / 2};
         TUIA::SetBackgroundColor(BackgroundColor::White);
         TUIA::SetForegroundColor(ForegroundColor::Black);
@@ -52,7 +52,7 @@ class DialogBox
     void DrawButton(){
 
         Point buttonPosition {
-            position.GetX() + width / 2 - (uint32_t)button.size() / 2, 
+            position.GetX() + width / 2 - (int)button.size() / 2, 
             position.GetY() + height - 2};
         TUIA::SetBackgroundColor(BackgroundColor::BrightWhite);
         TUIA::SetForegroundColor(ForegroundColor::Black);

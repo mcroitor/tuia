@@ -24,7 +24,7 @@ namespace usm::graphics
         /**
          * @brief Create a Image object with width x height dimensions.
          */
-        Image(uint32_t width, uint32_t height, const BackgroundColor &color = BackgroundColor::Black);
+        Image(int width, int height, const BackgroundColor &color = BackgroundColor::Black);
         /**
          * @brief Return color of specified pixel.
          * @param Point point coordinate of pixel
@@ -45,14 +45,14 @@ namespace usm::graphics
         void SetColor(const Point &point, const Color &color);
         /**
          * @brief Return width of image
-         * @return uint32_t
+         * @return int
          */
-        uint32_t GetWidth() const;
+        int GetWidth() const;
         /**
          * @brief Return height of image
-         * @return uint32_t
+         * @return int
          */
-        uint32_t GetHeight() const;
+        int GetHeight() const;
         /**
          * @brief Return symbol of specified pixel.
          * @param Point point coordinate of pixel

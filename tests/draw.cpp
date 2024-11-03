@@ -10,8 +10,8 @@ int main() {
     TUIA::Init();
     Image img {10, 10};
 
-    for(uint32_t i = 0; i < img.GetWidth(); i++) {
-        for(uint32_t j = 0; j < img.GetHeight(); j++) {
+    for(int i = 0; i < img.GetWidth(); i++) {
+        for(int j = 0; j < img.GetHeight(); j++) {
             img.SetColor({i, j}, Color(255, 255, 255));
         }
     }
@@ -35,8 +35,8 @@ int main() {
         BackgroundColor::BrightWhite
     };
 
-    for(uint32_t i = 0; i < img.GetWidth(); i++) {
-        for(uint32_t j = 0; j < img.GetHeight(); j++) {
+    for(int i = 0; i < img.GetWidth(); i++) {
+        for(int j = 0; j < img.GetHeight(); j++) {
             auto colorIndex = rand() % colors.size();
             BackgroundColor bgColor = colors[colorIndex];
             Color color = usm::graphics::terminal::FromBackgroundColor(bgColor);

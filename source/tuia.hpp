@@ -41,7 +41,7 @@ namespace usm::graphics
          * @param width
          * @param height
          */
-        static void SetWindowSize(uint32_t width, uint32_t height);
+        static void SetWindowSize(int width, int height);
         /**
          * @brief Set foreground color for text.
          * @param Color will be converted to the appropiate ForegroundColor
@@ -83,7 +83,7 @@ namespace usm::graphics
          * @param position point of screen
          * @param nChars number of symbols for clear
          */
-        static void ClearLine(const Point &position, uint32_t nChars);
+        static void ClearLine(const Point &position, int nChars);
         /**
          * @brief Clear block of screen.
          * @param leftTop left top point of screen
@@ -96,7 +96,7 @@ namespace usm::graphics
          * @param nChars number of symbols
          * @param nLines number of lines
          */
-        static void ClearBlock(const Point &position, uint32_t nChars, uint32_t nLines);
+        static void ClearBlock(const Point &position, int nChars, int nLines);
         /**
          * @brief Clear screen.
          */
@@ -115,7 +115,7 @@ namespace usm::graphics
          * @param rightBottom right bottom point of screen
          * @param colorBackground color of background
          */
-        static void DrawBlock(const Point &leftTop, uint32_t nChars, uint32_t nLines, const Color &colorBackground);
+        static void DrawBlock(const Point &leftTop, int nChars, int nLines, const Color &colorBackground);
         /**
          * @brief Set cursor to the specified point.
          * @param position point of screen

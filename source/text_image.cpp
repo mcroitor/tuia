@@ -5,7 +5,7 @@
 
 namespace usm::graphics::terminal
 {
-    TextImage::TextImage(size_t width, size_t height, const Symbol &symbol):
+    TextImage::TextImage(int width, int height, const Symbol &symbol):
         symbols(height, std::vector<Symbol>(width, symbol))
     {
     }
@@ -15,12 +15,12 @@ namespace usm::graphics::terminal
     {
     }
 
-    uint32_t TextImage::GetWidth() const
+    int TextImage::GetWidth() const
     {
         return symbols[0].size();
     }
 
-    uint32_t TextImage::GetHeight() const
+    int TextImage::GetHeight() const
     {
         return symbols.size();
     }
@@ -48,7 +48,7 @@ namespace usm::graphics::terminal
         while (std::getline(file, line))
         {
             std::vector<Symbol> row(line.size(), ' ');
-            for (size_t i = 0; i < line.size(); ++i)
+            for (int i = 0; i < line.size(); ++i)
             {
                 row[i] = (Symbol)line[i];
             }

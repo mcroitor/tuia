@@ -1,5 +1,6 @@
-#include <windows.h>
 #include "tuia.hpp"
+
+#include <windows.h>
 #include <cstdio>
 #include <format>
 
@@ -43,7 +44,7 @@ namespace usm::graphics
         ShowWindow(console, SW_MAXIMIZE);
     }
 
-    void TUIA::SetWindowSize(uint32_t width, uint32_t height)
+    void TUIA::SetWindowSize(int width, int height)
     {
         HWND console = GetConsoleWindow();
         RECT r;
@@ -94,7 +95,7 @@ namespace usm::graphics
         std::cout << data;
     }
 
-    void TUIA::ClearLine(const Point &position, uint32_t nChars)
+    void TUIA::ClearLine(const Point &position, int nChars)
     {
         std::string emptyLine(nChars, ' ');
         TUIA::WriteLine(position, emptyLine);
@@ -102,15 +103,15 @@ namespace usm::graphics
 
     void TUIA::ClearBlock(const Point &leftTop, const Point &rightBottom)
     {
-        size_t nChars = rightBottom.GetX() - leftTop.GetX();
-        size_t nLines = rightBottom.GetY() - leftTop.GetY();
+        int nChars = rightBottom.GetX() - leftTop.GetX();
+        int nLines = rightBottom.GetY() - leftTop.GetY();
         TUIA::ClearBlock(leftTop, nChars, nLines);
     }
 
-    void TUIA::ClearBlock(const Point &position, uint32_t nChars, uint32_t nLines)
+    void TUIA::ClearBlock(const Point &position, int nChars, int nLines)
     {
         std::string data = "";
-        for (uint32_t i = 0; i < nLines; ++i)
+        for (int i = 0; i < nLines; ++i)
         {
             data += PointCode({position.GetX(), position.GetY() + i}) + std::string(nChars, ' ');
         }
@@ -125,10 +126,10 @@ namespace usm::graphics
     void TUIA::Draw(const Point &position, const Image &image)
     {
         std::string data;
-        for (uint32_t row = 0; row < image.GetHeight(); ++row)
+        for (int row = 0; row < image.GetHeight(); ++row)
         {
             data += PointCode({position.GetX(), position.GetY() + row});
-            for (uint32_t col = 0; col < image.GetWidth(); ++col)
+            for (int col = 0; col < image.GetWidth(); ++col)
             {
                 auto foreground = _foregroundColor;
                 auto background = image.GetColor({col, row});
@@ -141,9 +142,9 @@ namespace usm::graphics
     void TUIA::Draw(const Image &image)
     {
         std::string data = PointCode({0, 0});
-        for (uint32_t row = 0; row < image.GetHeight(); ++row)
+        for (int row = 0; row < image.GetHeight(); ++row)
         {
-            for (uint32_t col = 0; col < image.GetWidth(); ++col)
+            for (int col = 0; col < image.GetWidth(); ++col)
             {
                 auto foreground = _foregroundColor;
                 auto background = image.GetColor({col, row});
@@ -157,9 +158,9 @@ namespace usm::graphics
     void TUIA::Draw(const TextImage &image)
     {
         std::string data = PointCode({0, 0});
-        for (uint32_t row = 0; row < image.GetHeight(); ++row)
+        for (int row = 0; row < image.GetHeight(); ++row)
         {
-            for (uint32_t col = 0; col < image.GetWidth(); ++col)
+            for (int col = 0; col < image.GetWidth(); ++col)
             {
                 data += (char)image.GetSymbol({col, row});
             }
@@ -168,7 +169,7 @@ namespace usm::graphics
         puts(data.c_str());
     }
 
-    void TUIA::DrawBlock(const Point &leftTop, uint32_t nChars, uint32_t nLines, const Color &colorBackground)
+    void TUIA::DrawBlock(const Point &leftTop, int nChars, int nLines, const Color &colorBackground)
     {
         Color color = GetBackgroundColor();
         SetBackgroundColor(colorBackground);
@@ -191,11 +192,9 @@ namespace usm::graphics
     Point TUIA::GetScreenSize()
     {
         CONSOLE_SCREEN_BUFFER_INFO console;
-
         GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &console);
-        size_t columns = console.srWindow.Right - console.srWindow.Left + 1;
-        size_t rows = console.srWindow.Bottom - console.srWindow.Top + 1;
-
+        int columns = console.srWindow.Right - console.srWindow.Left + 1;
+        int rows = console.srWindow.Bottom - console.srWindow.Top + 1;
         return Point(columns, rows);
     }
 

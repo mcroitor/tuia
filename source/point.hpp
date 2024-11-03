@@ -10,28 +10,28 @@ namespace usm::graphics
      */
     class Point
     {
-        uint32_t _x;
-        uint32_t _y;
+        int _x;
+        int _y;
 
     public:
         /**
          * @brief Create a Point object from coordinates
          */
-        Point(uint32_t x = 0, uint32_t y = 0);
+        Point(int x = 0, int y = 0);
         /**
          * @brief Copy constructor
          */
         Point(const Point& point);
         /**
          * @brief get X value
-         * @return uint32_t
+         * @return int
          */
-        uint32_t GetX() const;
+        int GetX() const;
         /**
          * @brief get y value
-         * @return uint32_t
+         * @return int
          */
-        uint32_t GetY() const;
+        int GetY() const;
         /**
          * @brief copy operator
          * @param point left value object

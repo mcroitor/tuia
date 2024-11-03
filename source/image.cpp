@@ -3,7 +3,7 @@
 
 namespace usm::graphics
 {
-    Image::Image(uint32_t width, uint32_t height, const BackgroundColor &color) :
+    Image::Image(int width, int height, const BackgroundColor &color) :
         lines(height, std::vector<BackgroundColor>(width, color)),
         symbols(height, std::vector<char>(width, ' '))
     {
@@ -24,12 +24,12 @@ namespace usm::graphics
         lines[point.GetY()][point.GetX()] = color;
     }
     
-    uint32_t Image::GetWidth() const
+    int Image::GetWidth() const
     {
         return lines[0].size();
     }
 
-    uint32_t Image::GetHeight() const
+    int Image::GetHeight() const
     {
         return lines.size();
     }
@@ -47,12 +47,12 @@ namespace usm::graphics
     void Image::Load(const std::string& filename){
         std::ifstream fin(filename.c_str());
         std::string line;
-        uint32_t width, height;
+        int width, height;
         fin >> width >> height;
         lines.resize(width, std::vector<BackgroundColor>(height, BackgroundColor::Black));
         symbols.resize(width, std::vector<char>(height, ' '));
-        for(uint32_t row = 0; row < GetHeight(); ++row) {
-            for(uint32_t col = 0; col < GetWidth(); ++col) {
+        for(int row = 0; row < GetHeight(); ++row) {
+            for(int col = 0; col < GetWidth(); ++col) {
                 Color color;
                 fin >> color;
                 lines[row][col] = ToBackgroundColor(color);
@@ -64,8 +64,8 @@ namespace usm::graphics
     void Image::Save(const std::string& filename) const{
         std::ofstream fout(filename.c_str());
         fout << GetWidth() << " " << GetHeight() << std::endl;
-        for(uint32_t row = 0; row  < GetHeight(); ++row) {
-            for(uint32_t col = 0; col < GetWidth(); ++col) {
+        for(int row = 0; row  < GetHeight(); ++row) {
+            for(int col = 0; col < GetWidth(); ++col) {
                 fout << FromBackgroundColor(lines[row][col]) << " ";
                 fout << symbols[row][col] << " ";
             }
