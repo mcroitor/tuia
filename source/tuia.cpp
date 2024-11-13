@@ -47,6 +47,7 @@ namespace usm::graphics
         consoleMode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
         consoleMode |= DISABLE_NEWLINE_AUTO_RETURN;
         SetConsoleMode(stdoutHandle, consoleMode);
+
         ResetColors();
         ClearScreen();
     }
@@ -195,6 +196,7 @@ namespace usm::graphics
     void TUIA::DrawBlock(const Point &leftTop, int nChars, int nLines, const Color &colorBackground)
     {
         DrawBlock(leftTop, nChars, nLines, ToBackgroundColor(colorBackground));
+
     }
 
     void TUIA::SetCursor(const Point &position)
