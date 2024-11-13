@@ -5,6 +5,7 @@
 #include <string>
 #include "terminal_color.hpp"
 #include "image.hpp"
+#include "text_image.hpp"
 #include "point.hpp"
 
 namespace usm::graphics
@@ -18,7 +19,7 @@ namespace usm::graphics
         static BackgroundColor _backgroundColor;
 
         static std::string ColorCode();
-
+        static std::string PointCode(const Point& position);
     public:
         /**
          * @brief Create a string representation (ASCII code) for specified colors.
@@ -29,12 +30,24 @@ namespace usm::graphics
         static std::string ColorCode(ForegroundColor fgColor, BackgroundColor bgColor);
         /**
          * @brief Set initial values for background and foreground colors.
+         * @param ForegroundColor
+         * @param BackgroundColor
+         */
+        static void SetColors(const ForegroundColor &foregroundColor, const BackgroundColor &backgroundColor);
+        /**
+         * @brief Set initial values for background and foreground colors.
          */
         static void Init();
         /**
-         * @brief Flush output buffer.
+         * @brief Set full screen mode.
          */
-        static void Flush();
+        static void FullScreen();
+        /**
+         * @brief Set window size.
+         * @param width
+         * @param height
+         */
+        static void SetWindowSize(int width, int height);
         /**
          * @brief Set foreground color for text.
          * @param Color will be converted to the appropiate ForegroundColor
@@ -76,7 +89,7 @@ namespace usm::graphics
          * @param position point of screen
          * @param nChars number of symbols for clear
          */
-        static void ClearLine(const Point &position, uint32_t nChars);
+        static void ClearLine(const Point &position, int nChars);
         /**
          * @brief Clear block of screen.
          * @param leftTop left top point of screen
@@ -89,7 +102,7 @@ namespace usm::graphics
          * @param nChars number of symbols
          * @param nLines number of lines
          */
-        static void ClearBlock(const Point &position, uint32_t nChars, uint32_t nLines);
+        static void ClearBlock(const Point &position, int nChars, int nLines);
         /**
          * @brief Clear screen.
          */
@@ -100,24 +113,31 @@ namespace usm::graphics
          * @param image
          */
         static void Draw(const Point &position, const Image &image);
+        static void Draw(const Image &image);
+        static void Draw(const TextImage &image);
         /**
          * @brief Draw block of screen.
          * @param leftTop left top point of screen
          * @param rightBottom right bottom point of screen
          * @param colorBackground color of background
          */
-        static void DrawBlock(const Point &leftTop, uint32_t nChars, uint32_t nLines, const Color &colorBackground);
+        static void DrawBlock(const Point &leftTop, int nChars, int nLines, const Color &colorBackground);
+        static void DrawBlock(const Point &leftTop, int nChars, int nLines, const BackgroundColor &colorBackground);
         /**
          * @brief Set cursor to the specified point.
          * @param position point of screen
          */
         static void SetCursor(const Point &position);
         /**
+         * @brief Get cursor position.
+         * @return cursor position
+         */
+        static Point GetCursor();
+        /**
          * @brief Return Screen size as point. X value == width, Y value == height
          * @return Point
          */
         static Point GetScreenSize();
-
         /**
          * @brief Set a color point on the screen.
          * @param position point on the screen

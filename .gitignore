@@ -2,6 +2,7 @@
 .PVS-Studio/
 
 build/
+builds/
 obj/
 
 *.a
