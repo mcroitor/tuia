@@ -67,7 +67,7 @@ namespace usm::graphics
         uint8_t green = static_cast<uint8_t>(std::round(Green() / 85.0f) * 85);
         uint8_t blue = static_cast<uint8_t>(std::round(Blue() / 85.0f) * 85);
 
-        return Color {red, green, blue};
+        return Color (red, green, blue);
     }
 
     std::string Color::ToString() const {

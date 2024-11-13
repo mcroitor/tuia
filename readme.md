@@ -9,7 +9,7 @@ Text user interface library. Defined in the `usm::graphics` namespace.
 
 ## Build
 
-SHow usage:
+Show usage:
 
 ```shell
 make help
@@ -21,7 +21,18 @@ Build library:
 make
 ```
 
+Or you can use cmake for building:
+
+```shell
+mkdir build
+cd build
+cmake ..
+make
+```
+
 ## Interface
+
+The main class is `TUIA`. It provides a set of static methods for working with the text user interface.
 
 ```cpp
 class TUIA
@@ -45,6 +56,57 @@ public:
     static Point GetScreenSize();
     static void PutPoint(const Point& position, const Color& color);
     static void PutPoint(const Point& position, const BackgroundColor& color);
+};
+```
+
+Additional classes are used to represent colors and points.
+
+```cpp
+enum class ColorType {
+    Black = 0x00000000,
+    Red = 0x00FF0000,
+    Green = 0x0000FF00,
+    Blue = 0x000000FF,
+    White = 0x00FFFFFF,
+};
+
+class Color
+{
+public:
+    static uint32_t ExtractRed(uint32_t color);
+    static uint32_t ExtractGreen(uint32_t color);
+    static uint32_t ExtractBlue(uint32_t color);
+
+    Color();
+    Color(uint32_t color);
+    Color(uint8_t red, uint8_t green, uint8_t blue);
+    Color(const Color &color);
+
+    Color operator=(const Color &color);
+    bool operator==(const Color &color) const;
+
+    uint32_t Red() const;
+    uint32_t Green() const;
+    uint32_t Blue() const;
+    uint32_t Value() const;
+    std::string ToString() const;
+    Color ToTerminal() const;
+};
+```
+
+```cpp
+class Point
+{
+public:
+    Point();
+    Point(int32_t x, int32_t y);
+    Point(const Point &point);
+
+    Point operator=(const Point &point);
+    bool operator==(const Point &point) const;
+
+    int32_t X() const;
+    int32_t Y() const;
 };
 ```
 

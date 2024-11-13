@@ -30,6 +30,10 @@ target_link_libraries(testtuia tuia)
 add_executable(draw tests/draw.cpp)
 target_link_libraries(draw tuia)
 
+## tests/draw_colors.cpp
+add_executable(draw_colors tests/draw_colors.cpp)
+target_link_libraries(draw_colors tuia)
+
 ## tests/screen.cpp
 add_executable(screen tests/screen.cpp)
 target_link_libraries(screen tuia)

@@ -27,11 +27,13 @@ namespace usm::graphics
          * @return int
          */
         int GetX() const;
+
         /**
          * @brief get y value
          * @return int
          */
         int GetY() const;
+
         /**
          * @brief copy operator
          * @param point left value object
