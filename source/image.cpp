@@ -11,7 +11,7 @@ namespace usm::graphics
 
     BackgroundColor Image::GetColor(const Point &point) const
     {
-        return lines[point.GetX()][point.GetY()];
+        return lines[point.GetY()][point.GetX()];
     }
 
     void Image::SetColor(const Point &point, const Color &color)

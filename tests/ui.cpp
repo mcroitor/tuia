@@ -31,32 +31,30 @@ class DialogBox
     int height;
 
     void DrawBox(){
-        TUIA::SetBackgroundColor(BackgroundColor::White);
-        TUIA::ClearBlock(position, width, height);
+        TUIA::DrawBlock(position, width, height, BackgroundColor::White);
     }
     void DrawTitle(){
-        TUIA::SetBackgroundColor(BackgroundColor::Blue);
-        TUIA::SetForegroundColor(ForegroundColor::BrightWhite);
+
+        TUIA::SetColors(ForegroundColor::White, BackgroundColor::Blue);
         Point titlePosition {position.GetX() + 1, position.GetY() + 1};
-        TUIA::ClearBlock(titlePosition, width - 2, 1);
-        TUIA::WriteLine(titlePosition, title);
+        TUIA::DrawBlock(titlePosition, width, 1, BackgroundColor::Blue);
+        TUIA::WriteLine({titlePosition.GetX() + 1, titlePosition.GetY()}, title);
     }
     void DrawMessage(){
         Point messagePosition {
             position.GetX() + (int)message.size() / 2 + 1, 
             position.GetY() + height / 2};
-        TUIA::SetBackgroundColor(BackgroundColor::White);
-        TUIA::SetForegroundColor(ForegroundColor::Black);
+        TUIA::SetColors(ForegroundColor::Black, BackgroundColor::White);
         TUIA::WriteLine(messagePosition, message);
     }
     void DrawButton(){
-
+        auto buttonWidth = (int)button.size() + 4;
         Point buttonPosition {
-            position.GetX() + width / 2 - (int)button.size() / 2, 
-            position.GetY() + height - 2};
-        TUIA::SetBackgroundColor(BackgroundColor::BrightWhite);
-        TUIA::SetForegroundColor(ForegroundColor::Black);
-        TUIA::WriteLine(buttonPosition, button);
+            position.GetX() + width / 2 - buttonWidth / 2, 
+            position.GetY() + height - 3};
+        TUIA::SetColors(ForegroundColor::Black, BackgroundColor::BrightWhite);
+        TUIA::DrawBlock(buttonPosition, buttonWidth, 1, BackgroundColor::BrightWhite);
+        TUIA::WriteLine({buttonPosition.GetX() + 2, buttonPosition.GetY()}, button);
     }
 public:
     DialogBox(int width, int height, const std::string &title) 
@@ -88,5 +86,7 @@ int main()
     dialog.SetButtonText("OK");
 
     dialog.Show();
+    TUIA::ResetColors();
+    TUIA::SetCursor({0, dialogHeight});
     return 0;
 }

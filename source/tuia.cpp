@@ -31,9 +31,22 @@ namespace usm::graphics
         return std::format("\033[{};{}m", (int)fgColor, (int)bgColor);
     }
 
+    void TUIA::SetColors(const ForegroundColor &foregroundColor, const BackgroundColor &backgroundColor)
+    {
+        _foregroundColor = foregroundColor;
+        _backgroundColor = backgroundColor;
+        std::cout << ColorCode();
+    }
+
     void TUIA::Init()
     {
         std::ios_base::sync_with_stdio(false);
+        auto stdoutHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+        DWORD consoleMode;
+        GetConsoleMode(stdoutHandle, &consoleMode);
+        consoleMode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+        consoleMode |= DISABLE_NEWLINE_AUTO_RETURN;
+        SetConsoleMode(stdoutHandle, consoleMode);
         ResetColors();
         ClearScreen();
     }
@@ -56,27 +69,29 @@ namespace usm::graphics
     {
         SetForegroundColor(ForegroundColor::White);
         SetBackgroundColor(BackgroundColor::Black);
-        PutPoint({0, 0}, BackgroundColor::Black);
+        std::cout << ColorCode();
     }
 
     void TUIA::SetForegroundColor(const ForegroundColor &foregroundColor)
     {
         _foregroundColor = foregroundColor;
+        std::cout << ColorCode();
     }
 
     void TUIA::SetBackgroundColor(const BackgroundColor &backgroundColor)
     {
         _backgroundColor = backgroundColor;
+        std::cout << ColorCode();
     }
 
     void TUIA::SetForegroundColor(const Color &foregroundColor)
     {
-        _foregroundColor = ToForegroundColor(foregroundColor);
+        SetForegroundColor(ToForegroundColor(foregroundColor));
     }
 
     void TUIA::SetBackgroundColor(const Color &backgroundColor)
     {
-        _backgroundColor = ToBackgroundColor(backgroundColor);
+        SetBackgroundColor(ToBackgroundColor(backgroundColor));
     }
 
     Color TUIA::GetForegroundColor()
@@ -115,7 +130,7 @@ namespace usm::graphics
         {
             data += PointCode({position.GetX(), position.GetY() + i}) + std::string(nChars, ' ');
         }
-        std::cout << data;
+        std::cout << ColorCode() << data;
     }
 
     void TUIA::ClearScreen()
@@ -136,7 +151,7 @@ namespace usm::graphics
                 data += ColorCode(foreground, background) + image.GetSymbol({col, row});
             }
         }
-        puts(data.c_str());
+        std::cout << data;
     }
 
     void TUIA::Draw(const Image &image)
@@ -152,7 +167,7 @@ namespace usm::graphics
             }
             data += "\n";
         }
-        puts(data.c_str());
+        std::cout << data;
     }
 
     void TUIA::Draw(const TextImage &image)
@@ -169,12 +184,17 @@ namespace usm::graphics
         puts(data.c_str());
     }
 
-    void TUIA::DrawBlock(const Point &leftTop, int nChars, int nLines, const Color &colorBackground)
+    void TUIA::DrawBlock(const Point &leftTop, int nChars, int nLines, const BackgroundColor &colorBackground)
     {
         Color color = GetBackgroundColor();
         SetBackgroundColor(colorBackground);
         ClearBlock(leftTop, nChars, nLines);
         SetBackgroundColor(color);
+    }
+
+    void TUIA::DrawBlock(const Point &leftTop, int nChars, int nLines, const Color &colorBackground)
+    {
+        DrawBlock(leftTop, nChars, nLines, ToBackgroundColor(colorBackground));
     }
 
     void TUIA::SetCursor(const Point &position)

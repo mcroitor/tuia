@@ -40,23 +40,24 @@ int main()
 {
 
     TUIA::Init();
+    TUIA::ClearScreen();
     TUIA::FullScreen();
     auto screenSize = TUIA::GetScreenSize();
-    TextImage textImage(screenSize.GetX()-1, screenSize.GetY()-2);
+    TextImage textImage(screenSize.GetX()-1, screenSize.GetY()-5);
 
-    for (int i = 1; i < textImage.GetWidth(); i++)
+    for (int i = 0; i < textImage.GetWidth(); i++)
     {
         textImage.SetSymbol({i, 0}, '-');
         textImage.SetSymbol({i, textImage.GetHeight() - 1}, '-');
     }
 
-    for (int i = 1; i < textImage.GetHeight(); i++)
+    for (int i = 0; i < textImage.GetHeight(); i++)
     {
         textImage.SetSymbol({0, i}, '|');
         textImage.SetSymbol({textImage.GetWidth() - 1, i}, '|');
     }
 
-    std::vector<TextImage> slides(30, textImage);
+    std::vector<TextImage> slides(50, textImage);
 
     for (int i = 0; i < slides.size(); i++)
     {
@@ -67,7 +68,7 @@ int main()
     {
         TUIA::Draw(textImage);
         TUIA::Draw(slides[i]);
-        //std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
     return 0;
 }

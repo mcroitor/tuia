@@ -38,6 +38,10 @@ target_link_libraries(screen tuia)
 add_executable(change_screens tests/change_screens.cpp)
 target_link_libraries(change_screens tuia)
 
+## tests/moved_point.cpp
+add_executable(moved_point tests/moved_point.cpp)
+target_link_libraries(moved_point tuia)
+
 ## tests/ui.cpp
 add_executable(ui tests/ui.cpp)
 target_link_libraries(ui tuia)

@@ -30,6 +30,12 @@ namespace usm::graphics
         static std::string ColorCode(ForegroundColor fgColor, BackgroundColor bgColor);
         /**
          * @brief Set initial values for background and foreground colors.
+         * @param ForegroundColor
+         * @param BackgroundColor
+         */
+        static void SetColors(const ForegroundColor &foregroundColor, const BackgroundColor &backgroundColor);
+        /**
+         * @brief Set initial values for background and foreground colors.
          */
         static void Init();
         /**
@@ -116,6 +122,7 @@ namespace usm::graphics
          * @param colorBackground color of background
          */
         static void DrawBlock(const Point &leftTop, int nChars, int nLines, const Color &colorBackground);
+        static void DrawBlock(const Point &leftTop, int nChars, int nLines, const BackgroundColor &colorBackground);
         /**
          * @brief Set cursor to the specified point.
          * @param position point of screen
