@@ -6,8 +6,9 @@ set(CMAKE_CXX_COMPILER g++)
 set(CXX_STANDARD 20)
 
 # add_compile_options(-std=c++20 -O3)
-add_compile_options(-pg -g -std=c++20 -O3)
-add_link_options(-pg -g -O3)
+# enable support for multithreading, profiling and debugging 
+add_compile_options(-pthread -pg -g -std=c++20 -O3)
+add_link_options(-pthread -pg -g -O3)
 
 set(SOURCES source/color.cpp
     source/image.cpp

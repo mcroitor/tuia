@@ -126,12 +126,11 @@ namespace usm::graphics
 
     void TUIA::ClearBlock(const Point &position, int nChars, int nLines)
     {
-        std::string data = "";
+#pragma omp parallel for
         for (int i = 0; i < nLines; ++i)
         {
-            data += PointCode({position.GetX(), position.GetY() + i}) + std::string(nChars, ' ');
+            std::cout << ColorCode() << PointCode({position.GetX(), position.GetY() + i}) + std::string(nChars, ' ');
         }
-        std::cout << ColorCode() << data;
     }
 
     void TUIA::ClearScreen()
@@ -141,7 +140,7 @@ namespace usm::graphics
 
     void TUIA::Draw(const Point &position, const Image &image)
     {
-        std::string data;
+        std::string data{""};
         for (int row = 0; row < image.GetHeight(); ++row)
         {
             data += PointCode({position.GetX(), position.GetY() + row});
@@ -152,7 +151,7 @@ namespace usm::graphics
                 data += ColorCode(foreground, background) + image.GetSymbol({col, row});
             }
         }
-        std::cout << data;
+        puts(data.c_str());
     }
 
     void TUIA::Draw(const Image &image)
@@ -166,9 +165,9 @@ namespace usm::graphics
                 auto background = image.GetColor({col, row});
                 data += ColorCode(foreground, background) + image.GetSymbol({col, row});
             }
-            data += "\n";
+            data += '\n';
         }
-        std::cout << data;
+        puts(data.c_str());
     }
 
     void TUIA::Draw(const TextImage &image)
@@ -180,7 +179,7 @@ namespace usm::graphics
             {
                 data += (char)image.GetSymbol({col, row});
             }
-            data += "\n";
+            data += '\n';
         }
         puts(data.c_str());
     }
@@ -196,7 +195,6 @@ namespace usm::graphics
     void TUIA::DrawBlock(const Point &leftTop, int nChars, int nLines, const Color &colorBackground)
     {
         DrawBlock(leftTop, nChars, nLines, ToBackgroundColor(colorBackground));
-
     }
 
     void TUIA::SetCursor(const Point &position)
