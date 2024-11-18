@@ -42,8 +42,8 @@ int main()
     TUIA::Init();
     TUIA::ClearScreen();
     TUIA::FullScreen();
-    auto screenSize = TUIA::GetScreenSize();
-    TextImage textImage(screenSize.GetX()-1, screenSize.GetY()-5);
+    // auto screenSize = TUIA::GetScreenSize();
+    TextImage textImage(130, 32);
 
     for (int i = 0; i < textImage.GetWidth(); i++)
     {

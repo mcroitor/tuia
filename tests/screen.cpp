@@ -14,8 +14,8 @@ int main()
 
     TUIA::Init();
     Point dim = TUIA::GetScreenSize();
-    uint32_t width = dim.X();
-    uint32_t height = dim.Y();
+    uint32_t width = dim.GetX();
+    uint32_t height = dim.GetY();
     std::deque<BackgroundColor> colors{
         BackgroundColor::Blue,
         BackgroundColor::Cyan,
