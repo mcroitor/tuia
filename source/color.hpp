@@ -5,16 +5,10 @@
 #include <iostream>
 #include <string>
 
+#include "color_type.hpp"
+
 namespace usm::graphics
-{
-    enum class ColorType {
-        Black = 0x00000000,
-        Red = 0x00FF0000,
-        Green = 0x0000FF00,
-        Blue = 0x000000FF,
-        White = 0x00FFFFFF,
-    };
-  
+{  
     /**
      * @brief Color RGB representation
      *
@@ -131,7 +125,7 @@ namespace usm::graphics
         */
         Color ToTerminal() const;
         /**
-         * @brief return string reprezentation of colors (as HEX)
+         * @brief return string representation of colors (as HEX)
          * @return std::string
          */
         std::string ToString() const;

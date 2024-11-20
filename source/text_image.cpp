@@ -94,4 +94,41 @@ namespace usm::graphics::terminal
     {
         return TextImage(*this);
     }
+
+    TextImage TextImage::GetPart(const Point &leftTop, const Point &rightBottom) const
+    {
+        TextImage part(rightBottom.GetX() - leftTop.GetX(), rightBottom.GetY() - leftTop.GetY());
+        for (int y = leftTop.GetY(); y < rightBottom.GetY(); ++y)
+        {
+            for (int x = leftTop.GetX(); x < rightBottom.GetX(); ++x)
+            {
+                part.SetSymbol(Point(x - leftTop.GetX(), y - leftTop.GetY()), GetSymbol(Point(x, y)));
+            }
+        }
+        return part;
+    }
+
+    void TextImage::SetPart(const Point &leftTop, const TextImage &part)
+    {
+        for (int y = 0; y < part.GetHeight(); ++y)
+        {
+            for (int x = 0; x < part.GetWidth(); ++x)
+            {
+                SetSymbol(Point(leftTop.GetX() + x, leftTop.GetY() + y), part.GetSymbol(Point(x, y)));
+            }
+        }
+    }
+
+    void TextImage::Fill(const Symbol &symbol)
+    {
+        for (auto &row : symbols)
+        {
+            std::fill(row.begin(), row.end(), symbol);
+        }
+    }
+
+    void TextImage::Clear()
+    {
+        Fill(' ');
+    }
 }

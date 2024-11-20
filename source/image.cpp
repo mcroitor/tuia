@@ -24,6 +24,16 @@ namespace usm::graphics
     {
         lines[point.GetY()][point.GetX()] = color;
     }
+
+    void Image::SetPixel(const Point &point, const Color &color)
+    {
+        SetColor(point, color);
+    }
+
+    void Image::SetPixel(const Point &point, const BackgroundColor &color)
+    {
+        SetColor(point, color);
+    }
     
     int Image::GetWidth() const
     {

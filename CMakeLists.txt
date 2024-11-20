@@ -11,9 +11,10 @@ add_compile_options(-pthread -pg -g -std=c++20 -O3)
 add_link_options(-pthread -pg -g -O3)
 
 set(SOURCES source/color.cpp
+    source/background_color.cpp
+    source/foreground_color.cpp
     source/image.cpp
     source/point.cpp
-    source/terminal_color.cpp
     source/text_image.cpp
     source/tuia.cpp)
 
@@ -27,30 +28,34 @@ target_link_libraries(testcolor tuia)
 add_executable(testtuia tests/testtuia.cpp)
 target_link_libraries(testtuia tuia)
 
-## tests/draw.cpp
-add_executable(draw tests/draw.cpp)
+## samples/draw.cpp
+add_executable(draw samples/draw.cpp)
 target_link_libraries(draw tuia)
 
-## tests/draw_colors.cpp
-add_executable(draw_colors tests/draw_colors.cpp)
+## samples/draw_colors.cpp
+add_executable(draw_colors samples/draw_colors.cpp)
 target_link_libraries(draw_colors tuia)
 
-## tests/screen.cpp
-add_executable(screen tests/screen.cpp)
+## samples/screen.cpp
+add_executable(screen samples/screen.cpp)
 target_link_libraries(screen tuia)
 
-## tests/change_screens.cpp
-add_executable(change_screens tests/change_screens.cpp)
+## samples/change_screens.cpp
+add_executable(change_screens samples/change_screens.cpp)
 target_link_libraries(change_screens tuia)
 
-## tests/moved_point.cpp
-add_executable(moved_point tests/moved_point.cpp)
+## samples/moved_point.cpp
+add_executable(moved_point samples/moved_point.cpp)
 target_link_libraries(moved_point tuia)
 
-## tests/ui.cpp
-add_executable(ui tests/ui.cpp)
+## samples/ui.cpp
+add_executable(ui samples/ui.cpp)
 target_link_libraries(ui tuia)
 
-## tests/text_image.cpp
-add_executable(text_image tests/text_image.cpp)
+## samples/text_image.cpp
+add_executable(text_image samples/text_image.cpp)
 target_link_libraries(text_image tuia)
+
+## samples/ascii_painter.cpp
+add_executable(ascii_painter samples/ascii_painter.cpp)
+target_link_libraries(ascii_painter tuia)

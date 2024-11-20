@@ -1,5 +1,5 @@
-#ifndef _USM_GRAPHICS_TEXT_IMAGE_HPP_
-#define _USM_GRAPHICS_TEXT_IMAGE_HPP_
+#ifndef _USM_GRAPHICS_TERMINAL_TEXT_IMAGE_HPP_
+#define _USM_GRAPHICS_TERMINAL_TEXT_IMAGE_HPP_
 
 #include "point.hpp"
 
@@ -28,6 +28,10 @@ namespace usm::graphics::terminal
         void Load(const std::string &filename);
         void Save(const std::string &filename) const;
         TextImage Clone() const;
+        TextImage GetPart(const Point &leftTop, const Point &rightBottom) const;
+        void SetPart(const Point &leftTop, const TextImage &part);
+        void Clear();
+        void Fill(const Symbol &symbol);
     };
 }
-#endif
+#endif // _USM_GRAPHICS_TERMINAL_TEXT_IMAGE_HPP_

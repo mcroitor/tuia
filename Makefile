@@ -8,6 +8,7 @@ SOURCE_DIR = ${PWD}/source
 OBJ_DIR = ${PWD}/obj
 BUILD_DIR = ${PWD}/build
 TESTS_DIR = ${PWD}/tests
+SAMPLES_DIR = ${PWD}/samples
 
 SOURCES = $(wildcard $(SOURCE_DIR)/*.cpp)
 OBJECTS = $(patsubst $(SOURCE_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SOURCES))
@@ -23,6 +24,7 @@ help:
 	@echo "make env       - print environment"
 	@echo "make compile   - compile libraries"
 	@echo "make build     - build libraries"
+	@echo "make samples   - build sample apps"
 	@echo "make static    - build static library"
 	@echo "make shared    - build shared library"
 	@echo "make clean     - clean project"
@@ -61,16 +63,18 @@ test: compile-tests run-tests
 compile-tests:
 	${CXX} ${TESTS_DIR}/testcolor.cpp -o ${BUILD_DIR}/testcolor ${COMPILE_OPTIONS} -I ${SOURCE_DIR} -L ${BUILD_DIR} -l ${APPNAME}
 	${CXX} ${TESTS_DIR}/testtuia.cpp -o ${BUILD_DIR}/testtuia ${COMPILE_OPTIONS} -I ${SOURCE_DIR} -L ${BUILD_DIR} -l ${APPNAME}
-	${CXX} ${TESTS_DIR}/draw.cpp -o ${BUILD_DIR}/draw ${COMPILE_OPTIONS} -I ${SOURCE_DIR} -L ${BUILD_DIR} -l ${APPNAME}
-	${CXX} ${TESTS_DIR}/screen.cpp -o ${BUILD_DIR}/screen ${COMPILE_OPTIONS} -I ${SOURCE_DIR} -L ${BUILD_DIR} -l ${APPNAME}
-	${CXX} ${TESTS_DIR}/change_screens.cpp -o ${BUILD_DIR}/change_screens ${COMPILE_OPTIONS} -I ${SOURCE_DIR} -L ${BUILD_DIR} -l ${APPNAME}
-	${CXX} ${TESTS_DIR}/text_image.cpp -o ${BUILD_DIR}/text_image ${COMPILE_OPTIONS} -I ${SOURCE_DIR} -L ${BUILD_DIR} -l ${APPNAME}
-	${CXX} ${TESTS_DIR}/ui.cpp -o ${BUILD_DIR}/ui ${COMPILE_OPTIONS} -I ${SOURCE_DIR} -L ${BUILD_DIR} -l ${APPNAME}
 
 run-tests:
 	${BUILD_DIR}/testcolor
 	${BUILD_DIR}/testtuia
-#	${BUILD_DIR}/draw
+
+samples: build
+	${CXX} ${SAMPLES_DIR}/ascii_painter.cpp -o ${BUILD_DIR}/ascii_painter ${COMPILE_OPTIONS} -I ${SOURCE_DIR} -L ${BUILD_DIR} -l ${APPNAME}
+	${CXX} ${SAMPLES_DIR}/draw.cpp -o ${BUILD_DIR}/draw ${COMPILE_OPTIONS} -I ${SOURCE_DIR} -L ${BUILD_DIR} -l ${APPNAME}
+	${CXX} ${SAMPLES_DIR}/screen.cpp -o ${BUILD_DIR}/screen ${COMPILE_OPTIONS} -I ${SOURCE_DIR} -L ${BUILD_DIR} -l ${APPNAME}
+	${CXX} ${SAMPLES_DIR}/change_screens.cpp -o ${BUILD_DIR}/change_screens ${COMPILE_OPTIONS} -I ${SOURCE_DIR} -L ${BUILD_DIR} -l ${APPNAME}
+	${CXX} ${SAMPLES_DIR}/text_image.cpp -o ${BUILD_DIR}/text_image ${COMPILE_OPTIONS} -I ${SOURCE_DIR} -L ${BUILD_DIR} -l ${APPNAME}
+	${CXX} ${SAMPLES_DIR}/ui.cpp -o ${BUILD_DIR}/ui ${COMPILE_OPTIONS} -I ${SOURCE_DIR} -L ${BUILD_DIR} -l ${APPNAME}
 
 static:
 	${AR} rvs ${STATIC} ${OBJECTS}

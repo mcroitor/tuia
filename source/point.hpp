@@ -1,8 +1,6 @@
 #ifndef _USM_GRAPHICS_POINT_HPP_
 #define _USM_GRAPHICS_POINT_HPP_
 
-#include <cstdint>
-
 namespace usm::graphics
 {
     /**

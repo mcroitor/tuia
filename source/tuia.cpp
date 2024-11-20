@@ -41,12 +41,16 @@ namespace usm::graphics
     void TUIA::Init()
     {
         std::ios_base::sync_with_stdio(false);
+#ifdef _WIN32
         auto stdoutHandle = GetStdHandle(STD_OUTPUT_HANDLE);
         DWORD consoleMode;
         GetConsoleMode(stdoutHandle, &consoleMode);
         consoleMode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
         consoleMode |= DISABLE_NEWLINE_AUTO_RETURN;
         SetConsoleMode(stdoutHandle, consoleMode);
+#elif __linux__
+        // accelerate output
+#endif
 
         ResetColors();
         ClearScreen();
@@ -54,16 +58,24 @@ namespace usm::graphics
 
     void TUIA::FullScreen()
     {
+#ifdef _WIN32
         HWND console = GetConsoleWindow();
         ShowWindow(console, SW_MAXIMIZE);
+#elif __linux__
+        std::cout << "\033[?1049h\033[H";
+#endif
     }
 
     void TUIA::SetWindowSize(int width, int height)
     {
+#ifdef _WIN32
         HWND console = GetConsoleWindow();
         RECT r;
         GetWindowRect(console, &r);
         MoveWindow(console, r.left, r.top, width, height, TRUE);
+#elif __linux__
+        // resize terminal window
+#endif
     }
 
     void TUIA::ResetColors()
@@ -135,6 +147,7 @@ namespace usm::graphics
 
     void TUIA::ClearScreen()
     {
+        std::cout << "\033[2J";
         TUIA::ClearBlock(Point(0, 0), TUIA::GetScreenSize());
     }
 
@@ -167,7 +180,9 @@ namespace usm::graphics
             }
             data += '\n';
         }
-        puts(data.c_str());
+
+        fwrite(data.c_str(), 1, data.size(), stdout);
+        // puts(data.c_str());
     }
 
     void TUIA::Draw(const TextImage &image)
@@ -204,18 +219,37 @@ namespace usm::graphics
 
     Point TUIA::GetCursor()
     {
+        Point cursor = Point(0, 0);
+#ifdef _WIN32
         CONSOLE_SCREEN_BUFFER_INFO console;
         GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &console);
-        return Point(console.dwCursorPosition.X, console.dwCursorPosition.Y);
+        cursor = Point(console.dwCursorPosition.X, console.dwCursorPosition.Y);
+#elif __linux__
+        // get cursor position
+        // TODO: implement
+#endif
+        return cursor;
     }
 
     Point TUIA::GetScreenSize()
     {
+        Point screenSize = Point(0, 0);
+#ifdef _WIN32
         CONSOLE_SCREEN_BUFFER_INFO console;
         GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &console);
         int columns = console.srWindow.Right - console.srWindow.Left + 1;
         int rows = console.srWindow.Bottom - console.srWindow.Top + 1;
-        return Point(columns, rows);
+        screenSize = Point(columns, rows);
+#elif __linux__
+        // get screen size
+        #include <sys/ioctl.h>
+        struct winsize w;
+        ioctl(0, TIOCGWINSZ, &w);
+        screenSize = Point(w.ws_col, w.ws_row);
+#else
+        screenSize = Point(120, 32);
+#endif
+        return screenSize;
     }
 
     void TUIA::PutPoint(const Point &position, const Color &color)
@@ -228,5 +262,10 @@ namespace usm::graphics
         SetCursor(position);
 
         std::cout << ColorCode(ForegroundColor::White, color) << " " << ColorCode();
+    }
+
+    void TUIA::Flush()
+    {
+        std::cout << std::flush;
     }
 }

@@ -3,7 +3,8 @@
 
 #include <cstdint>
 #include <string>
-#include "terminal_color.hpp"
+#include "background_color.hpp"
+#include "foreground_color.hpp"
 #include "image.hpp"
 #include "text_image.hpp"
 #include "point.hpp"
@@ -113,7 +114,15 @@ namespace usm::graphics
          * @param image
          */
         static void Draw(const Point &position, const Image &image);
+        /**
+         * @brief Draw image from point (0, 0).
+         * @param image
+         */
         static void Draw(const Image &image);
+        /**
+         * @brief Draw text image from point (0, 0).
+         * @param image
+         */
         static void Draw(const TextImage &image);
         /**
          * @brief Draw block of screen.
@@ -122,6 +131,12 @@ namespace usm::graphics
          * @param colorBackground color of background
          */
         static void DrawBlock(const Point &leftTop, int nChars, int nLines, const Color &colorBackground);
+        /**
+         * @brief Draw block of screen.
+         * @param leftTop left top point of screen
+         * @param rightBottom right bottom point of screen
+         * @param colorBackground color of background
+         */
         static void DrawBlock(const Point &leftTop, int nChars, int nLines, const BackgroundColor &colorBackground);
         /**
          * @brief Set cursor to the specified point.
@@ -154,6 +169,11 @@ namespace usm::graphics
          * @brief Reset screen colors. Background to Black, text to White.
         */
         static void ResetColors();
+
+        /**
+         * @brief Flush output buffer.
+         */
+        static void Flush();
     };
 }
 

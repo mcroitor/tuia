@@ -4,7 +4,7 @@
 #include <cstdint>
 #include <vector>
 #include "color.hpp"
-#include "terminal_color.hpp"
+#include "background_color.hpp"
 #include "point.hpp"
 
 using namespace usm::graphics::terminal;
@@ -40,9 +40,21 @@ namespace usm::graphics
         /**
          * @brief Set a pixel color.
          * @param Point point coordinate of pixel
+         * @param BackgroundColor color
+         */
+        void SetPixel(const Point &point, const BackgroundColor &color);
+        /**
+         * @brief Set a pixel color.
+         * @param Point point coordinate of pixel
          * @param Color color
          */
         void SetColor(const Point &point, const Color &color);
+        /**
+         * @brief Set a pixel color.
+         * @param Point point coordinate of pixel
+         * @param Color color
+         */
+        void SetPixel(const Point &point, const Color &color);
         /**
          * @brief Draw a line between two points.
          * @param Point start

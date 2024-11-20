@@ -36,7 +36,7 @@ int main()
         {
             TUIA::SetForegroundColor(Color(0, 0, 0));
         }
-        TUIA::WriteLine({1, (uint32_t)i}, colors[i].ToString());
+        TUIA::WriteLine({1, i}, colors[i].ToString());
     }
 
     return 0;
