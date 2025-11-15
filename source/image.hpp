@@ -98,6 +98,14 @@ namespace usm::graphics
          * @return Image
          */
         Image Clone() const;
+        /**
+         * @brief Check if point is inside image boundaries
+         *
+         * @param point
+         * @return true
+         * @return false
+         */
+        bool In(const Point& point) const;
     };
 }
 #endif
