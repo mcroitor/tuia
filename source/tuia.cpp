@@ -138,51 +138,64 @@ namespace usm::graphics
 
     void TUIA::ClearBlock(const Point &position, int nChars, int nLines)
     {
-#pragma omp parallel for
+        std::string buffer = ColorCode();
+        buffer.reserve(nLines * (nChars + 10));
         for (int i = 0; i < nLines; ++i)
         {
-            std::cout << ColorCode() << PointCode({position.GetX(), position.GetY() + i}) + std::string(nChars, ' ');
+            buffer += PointCode({position.GetX(), position.GetY() + i})
+                + std::string(nChars, ' ');
         }
+        fwrite(buffer.c_str(), 1, buffer.size(), stdout);
     }
 
     void TUIA::ClearScreen()
     {
-        std::cout << "\033[2J";
         TUIA::ClearBlock(Point(0, 0), TUIA::GetScreenSize());
     }
 
     void TUIA::Draw(const Point &position, const Image &image)
     {
-        std::string data{""};
+        auto foreground = _foregroundColor;
+        auto background = image.GetColor({0, 0});
+
+        std::string data;
+        data.reserve(image.GetHeight() * image.GetWidth() * 8); // Estimate size
         for (int row = 0; row < image.GetHeight(); ++row)
         {
             data += PointCode({position.GetX(), position.GetY() + row});
             for (int col = 0; col < image.GetWidth(); ++col)
             {
-                auto foreground = _foregroundColor;
-                auto background = image.GetColor({col, row});
-                data += ColorCode(foreground, background) + image.GetSymbol({col, row});
+                if(background != image.GetColor({col, row})) {
+                    background = image.GetColor({col, row});
+                    data += ColorCode(foreground, background);
+                }
+                data += image.GetSymbol({col, row});
             }
         }
-        puts(data.c_str());
+        fwrite(data.c_str(), 1, data.size(), stdout);
     }
 
     void TUIA::Draw(const Image &image)
     {
-        std::string data = PointCode({0, 0});
+        auto foreground = _foregroundColor;
+        auto background = image.GetColor({0, 0});
+        std::string data = PointCode({0, 0}) + ColorCode(_foregroundColor, background);
+        data.reserve(image.GetHeight() * image.GetWidth() * 8); // Estimate size
+
         for (int row = 0; row < image.GetHeight(); ++row)
         {
             for (int col = 0; col < image.GetWidth(); ++col)
             {
-                auto foreground = _foregroundColor;
-                auto background = image.GetColor({col, row});
-                data += ColorCode(foreground, background) + image.GetSymbol({col, row});
+                if(background != image.GetColor({col, row})) {
+                    background = image.GetColor({col, row});
+                    data += ColorCode(foreground, background);
+                }
+                data += image.GetSymbol({col, row});
             }
             data += '\n';
         }
 
         fwrite(data.c_str(), 1, data.size(), stdout);
-        // puts(data.c_str());
     }
 
     void TUIA::Draw(const TextImage &image)
@@ -196,7 +209,7 @@ namespace usm::graphics
             }
             data += '\n';
         }
-        puts(data.c_str());
+        fwrite(data.c_str(), 1, data.size(), stdout);
     }
 
     void TUIA::DrawBlock(const Point &leftTop, int nChars, int nLines, const BackgroundColor &colorBackground)
@@ -259,13 +272,14 @@ namespace usm::graphics
 
     void TUIA::PutPoint(const Point &position, const BackgroundColor &color)
     {
-        SetCursor(position);
-
-        std::cout << ColorCode(ForegroundColor::White, color) << " " << ColorCode();
+        std::string buffer = PointCode(position)
+            + ColorCode(_foregroundColor, color)
+            + " " + ColorCode();
+        fwrite(buffer.c_str(), 1, buffer.size(), stdout);
     }
 
     void TUIA::Flush()
     {
-        std::cout << std::flush;
+        fflush(stdout);
     }
 }

@@ -21,6 +21,8 @@ namespace usm::graphics::terminal
     public:
         TextImage(int width, int height, const Symbol &symbol = ' ');
         TextImage(const TextImage &image);
+        TextImage(TextImage&& other) noexcept;
+        TextImage& operator=(TextImage&& other) noexcept;
         int GetWidth() const;
         int GetHeight() const;
         Symbol GetSymbol(const Point &point) const;
@@ -32,6 +34,7 @@ namespace usm::graphics::terminal
         void SetPart(const Point &leftTop, const TextImage &part);
         void Clear();
         void Fill(const Symbol &symbol);
+        bool In(const Point &point) const;
     };
 }
 #endif // _USM_GRAPHICS_TERMINAL_TEXT_IMAGE_HPP_

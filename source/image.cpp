@@ -12,6 +12,9 @@ namespace usm::graphics
 
     BackgroundColor Image::GetColor(const Point &point) const
     {
+        if (!In(point)) {
+            return BackgroundColor::Black;
+        }
         return lines[point.GetY()][point.GetX()];
     }
 
@@ -22,6 +25,9 @@ namespace usm::graphics
 
     void Image::SetColor(const Point &point, const BackgroundColor &color)
     {
+        if (!In(point)) {
+            return;
+        }
         lines[point.GetY()][point.GetX()] = color;
     }
 
@@ -47,11 +53,17 @@ namespace usm::graphics
 
     char Image::GetSymbol(const Point &point) const
     {
+        if (!In(point)) {
+            return ' ';
+        }
         return symbols[point.GetY()][point.GetX()];
     }
 
     void Image::SetSymbol(const Point &point, const char &symbol)
     {
+        if (!In(point)) {
+            return;
+        }
         symbols[point.GetY()][point.GetX()] = symbol;
     }
 
@@ -89,6 +101,12 @@ namespace usm::graphics
         img.lines = lines;
         img.symbols = symbols;
         return img;
+    }
+
+    bool Image::In(const Point& point) const
+    {
+        return point.GetY() >= 0 && point.GetY() < GetHeight() &&
+               point.GetX() >= 0 && point.GetX() < GetWidth();
     }
 
 }

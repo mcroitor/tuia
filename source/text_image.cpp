@@ -15,6 +15,17 @@ namespace usm::graphics::terminal
     {
     }
 
+    TextImage::TextImage(TextImage&& other) noexcept
+        : symbols(std::move(other.symbols)) {}
+
+    TextImage& TextImage::operator=(TextImage&& other) noexcept
+    {
+        if (this != &other) {
+            symbols = std::move(other.symbols);
+        }
+        return *this;
+    }
+
     int TextImage::GetWidth() const
     {
         return symbols[0].size();
@@ -27,23 +38,15 @@ namespace usm::graphics::terminal
 
     TextImage::Symbol TextImage::GetSymbol(const Point &point) const
     {
+        if (!In(point)) {
+            return ' ';
+        }
         return symbols[point.GetY()][point.GetX()];
     }
 
     void TextImage::SetSymbol(const Point &point, const TextImage::Symbol &symbol)
     {
-        if (symbols.size() <= point.GetY())
-        {
-#ifdef DEBUG
-            std::cerr << "Y coordinate is out of range: " << point.GetY() << std::endl;
-#endif
-            return;
-        }
-        if (symbols[point.GetY()].size() <= point.GetX())
-        {
-#ifdef DEBUG
-            std::cerr << "X coordinate is out of range: " << point.GetX() << std::endl;
-#endif
+        if (!In(point)) {
             return;
         }
         symbols[point.GetY()][point.GetX()] = symbol;
@@ -92,7 +95,9 @@ namespace usm::graphics::terminal
 
     TextImage TextImage::Clone() const
     {
-        return TextImage(*this);
+        TextImage copy(GetWidth(), GetHeight());
+        copy.symbols = symbols;
+        return copy;
     }
 
     TextImage TextImage::GetPart(const Point &leftTop, const Point &rightBottom) const
@@ -130,5 +135,10 @@ namespace usm::graphics::terminal
     void TextImage::Clear()
     {
         Fill(' ');
+    }
+
+    bool TextImage::In(const Point &point) const
+    {
+        return point.GetX() >= 0 && point.GetX() < GetWidth() && point.GetY() >= 0 && point.GetY() < GetHeight();
     }
 }
