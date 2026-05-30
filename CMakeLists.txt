@@ -5,10 +5,11 @@ set(CMAKE_INSTALL_PREFIX "build")
 set(CMAKE_CXX_COMPILER g++)
 set(CXX_STANDARD 20)
 
-# add_compile_options(-std=c++20 -O3)
+add_compile_options(-std=c++20 -O3)
+add_link_options(-pthread -O3)
 # enable support for multithreading, profiling and debugging 
-add_compile_options(-pthread -pg -g -std=c++20 -O3)
-add_link_options(-pthread -pg -g -O3)
+# add_compile_options(-pthread -pg -g -std=c++20 -O3)
+# add_link_options(-pthread -pg -g -O3)
 
 set(SOURCES source/color.cpp
     source/background_color.cpp
@@ -27,6 +28,15 @@ target_link_libraries(testcolor tuia)
 
 add_executable(testtuia tests/testtuia.cpp)
 target_link_libraries(testtuia tuia)
+
+add_executable(testpoint tests/testpoint.cpp)
+target_link_libraries(testpoint tuia)
+
+add_executable(testimage tests/testimage.cpp)
+target_link_libraries(testimage tuia)
+
+add_executable(testtextimage tests/testtextimage.cpp)
+target_link_libraries(testtextimage tuia)
 
 ## samples/draw.cpp
 add_executable(draw samples/draw.cpp)
@@ -59,3 +69,7 @@ target_link_libraries(text_image tuia)
 ## samples/ascii_painter.cpp
 add_executable(ascii_painter samples/ascii_painter.cpp)
 target_link_libraries(ascii_painter tuia)
+
+## samples/clock.cpp
+add_executable(clock samples/clock.cpp)
+target_link_libraries(clock tuia)

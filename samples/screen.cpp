@@ -25,33 +25,23 @@ int main()
         BackgroundColor::Red,
         BackgroundColor::Yellow,
     };
-    /*
-    int oops = 0;
-    while (oops > 0)
+    int rounds = 3;
+    while (rounds > 0)
     {
         for (uint32_t i = 0; i < colors.size(); ++i)
         {
             TUIA::SetBackgroundColor(colors[i]);
-            TUIA::ClearBlock({i + 1, i + 1}, {width - i - 1, height - i - 1});
-            TUIA::WriteLine({i + 1, i + 1}, usm::graphics::terminal::FromBackgroundColor(colors[i]).ToString());
+            TUIA::ClearBlock({(int)i + 1, (int)i + 1}, {(int)(width - i - 1), (int)(height - i - 1)});
+            TUIA::WriteLine({(int)i + 1, (int)i + 1}, usm::graphics::terminal::FromBackgroundColor(colors[i]).ToString());
+            sleep_for(milliseconds(300));
         }
-        TUIA::SetCursor({0, height - 1});
+        TUIA::SetCursor({0, (int)height - 1});
         TUIA::ResetColors();
         auto color = colors.front();
         colors.pop_front();
         colors.push_back(color);
-        // sleep_for(milliseconds(1000));
-        system("pause");
-        --oops;
+        --rounds;
     }
-    */
-    sleep_for(milliseconds(1000));
-    TUIA::SetBackgroundColor(colors[0]);
-    TUIA::ClearScreen();
-    sleep_for(milliseconds(1000));
-    TUIA::SetBackgroundColor(colors[1]);
-    TUIA::ClearScreen();
-    sleep_for(milliseconds(1000));
-    //TUIA::Init();
+    TUIA::ResetColors();
     return 0;
 }

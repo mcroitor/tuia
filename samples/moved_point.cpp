@@ -1,5 +1,6 @@
 #include "tuia.hpp"
 
+#include <mutex>
 #include <thread>
 #include <windows.h>
 

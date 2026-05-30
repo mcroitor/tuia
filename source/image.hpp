@@ -63,6 +63,27 @@ namespace usm::graphics
          */
         void DrawLine(const Point& start, const Point& end, const Color& color);
         /**
+         * @brief Draw a rectangle.
+         * @param topLeft top-left corner of the rectangle
+         * @param width rectangle width in pixels
+         * @param height rectangle height in pixels
+         * @param color pixel color
+         * @param filled if true, draws a filled rectangle; otherwise draws outline only
+         */
+        void DrawRect(const Point& topLeft, int width, int height, const BackgroundColor& color, bool filled = true);
+        /**
+         * @brief Draw a circle outline using the midpoint circle algorithm.
+         * @param center center point of the circle
+         * @param radius circle radius in pixels
+         * @param color pixel color
+         */
+        void DrawCircle(const Point& center, int radius, const BackgroundColor& color);
+        /**
+         * @brief Fill the entire image with the specified color.
+         * @param color fill color
+         */
+        void Fill(const BackgroundColor& color);
+        /**
          * @brief Return width of image
          * @return int
          */
