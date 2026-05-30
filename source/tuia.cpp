@@ -1,6 +1,14 @@
 #include "tuia.hpp"
 
+#ifdef _WIN32
 #include <windows.h>
+#endif
+#ifdef __linux__
+#include <sys/ioctl.h>
+#include <termios.h>
+#include <unistd.h>
+#endif
+#include <iostream>
 #include <cstdio>
 #include <format>
 
@@ -15,6 +23,17 @@ namespace usm::graphics
 
     BackgroundColor TUIA::_backgroundColor = BackgroundColor::Black;
     ForegroundColor TUIA::_foregroundColor = ForegroundColor::White;
+    bool TUIA::_isFrameBuffering = false;
+    std::string TUIA::_frameBuffer;
+
+    void TUIA::Write(const std::string& data)
+    {
+        if (_isFrameBuffering) {
+            _frameBuffer += data;
+        } else {
+            fwrite(data.c_str(), 1, data.size(), stdout);
+        }
+    }
 
     std::string TUIA::ColorCode()
     {
@@ -35,7 +54,7 @@ namespace usm::graphics
     {
         _foregroundColor = foregroundColor;
         _backgroundColor = backgroundColor;
-        std::cout << ColorCode();
+        Write(ColorCode());
     }
 
     void TUIA::Init()
@@ -62,7 +81,7 @@ namespace usm::graphics
         HWND console = GetConsoleWindow();
         ShowWindow(console, SW_MAXIMIZE);
 #elif __linux__
-        std::cout << "\033[?1049h\033[H";
+        Write("\033[?1049h\033[H");
 #endif
     }
 
@@ -82,19 +101,19 @@ namespace usm::graphics
     {
         SetForegroundColor(ForegroundColor::White);
         SetBackgroundColor(BackgroundColor::Black);
-        std::cout << ColorCode();
+        Write(ColorCode());
     }
 
     void TUIA::SetForegroundColor(const ForegroundColor &foregroundColor)
     {
         _foregroundColor = foregroundColor;
-        std::cout << ColorCode();
+        Write(ColorCode());
     }
 
     void TUIA::SetBackgroundColor(const BackgroundColor &backgroundColor)
     {
         _backgroundColor = backgroundColor;
-        std::cout << ColorCode();
+        Write(ColorCode());
     }
 
     void TUIA::SetForegroundColor(const Color &foregroundColor)
@@ -119,8 +138,7 @@ namespace usm::graphics
 
     void TUIA::WriteLine(const Point &position, const std::string &line)
     {
-        std::string data = PointCode(position) + ColorCode() + line;
-        std::cout << data;
+        Write(PointCode(position) + ColorCode() + line);
     }
 
     void TUIA::ClearLine(const Point &position, int nChars)
@@ -145,7 +163,7 @@ namespace usm::graphics
             buffer += PointCode({position.GetX(), position.GetY() + i})
                 + std::string(nChars, ' ');
         }
-        fwrite(buffer.c_str(), 1, buffer.size(), stdout);
+        Write(buffer);
     }
 
     void TUIA::ClearScreen()
@@ -172,7 +190,7 @@ namespace usm::graphics
                 data += image.GetSymbol({col, row});
             }
         }
-        fwrite(data.c_str(), 1, data.size(), stdout);
+        Write(data); // Draw(Point, Image)
     }
 
     void TUIA::Draw(const Image &image)
@@ -195,7 +213,7 @@ namespace usm::graphics
             data += '\n';
         }
 
-        fwrite(data.c_str(), 1, data.size(), stdout);
+        Write(data); // Draw(Image)
     }
 
     void TUIA::Draw(const TextImage &image)
@@ -209,7 +227,7 @@ namespace usm::graphics
             }
             data += '\n';
         }
-        fwrite(data.c_str(), 1, data.size(), stdout);
+        Write(data);
     }
 
     void TUIA::DrawBlock(const Point &leftTop, int nChars, int nLines, const BackgroundColor &colorBackground)
@@ -227,7 +245,7 @@ namespace usm::graphics
 
     void TUIA::SetCursor(const Point &position)
     {
-        std::cout << PointCode(position);
+        Write(PointCode(position));
     }
 
     Point TUIA::GetCursor()
@@ -238,8 +256,27 @@ namespace usm::graphics
         GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &console);
         cursor = Point(console.dwCursorPosition.X, console.dwCursorPosition.Y);
 #elif __linux__
-        // get cursor position
-        // TODO: implement
+        struct termios oldattr, newattr;
+        tcgetattr(STDIN_FILENO, &oldattr);
+        newattr = oldattr;
+        newattr.c_lflag &= ~(ICANON | ECHO);
+        tcsetattr(STDIN_FILENO, TCSANOW, &newattr);
+        // Request cursor position via ANSI DSR
+        write(STDOUT_FILENO, "\033[6n", 4);
+        int row = 0, col = 0;
+        // Response format: ESC [ row ; col R
+        char ch;
+        if (read(STDIN_FILENO, &ch, 1) == 1 && ch == '\033' &&
+            read(STDIN_FILENO, &ch, 1) == 1 && ch == '[') {
+            while (read(STDIN_FILENO, &ch, 1) == 1 && ch != ';') {
+                if (ch >= '0' && ch <= '9') row = row * 10 + (ch - '0');
+            }
+            while (read(STDIN_FILENO, &ch, 1) == 1 && ch != 'R') {
+                if (ch >= '0' && ch <= '9') col = col * 10 + (ch - '0');
+            }
+        }
+        tcsetattr(STDIN_FILENO, TCSANOW, &oldattr);
+        cursor = Point(col - 1, row - 1);
 #endif
         return cursor;
     }
@@ -254,8 +291,6 @@ namespace usm::graphics
         int rows = console.srWindow.Bottom - console.srWindow.Top + 1;
         screenSize = Point(columns, rows);
 #elif __linux__
-        // get screen size
-        #include <sys/ioctl.h>
         struct winsize w;
         ioctl(0, TIOCGWINSZ, &w);
         screenSize = Point(w.ws_col, w.ws_row);
@@ -272,14 +307,25 @@ namespace usm::graphics
 
     void TUIA::PutPoint(const Point &position, const BackgroundColor &color)
     {
-        std::string buffer = PointCode(position)
-            + ColorCode(_foregroundColor, color)
-            + " " + ColorCode();
-        fwrite(buffer.c_str(), 1, buffer.size(), stdout);
+        Write(PointCode(position) + ColorCode(_foregroundColor, color) + " " + ColorCode());
     }
 
     void TUIA::Flush()
     {
         fflush(stdout);
+    }
+
+    void TUIA::BeginFrame()
+    {
+        _isFrameBuffering = true;
+        _frameBuffer.clear();
+    }
+
+    void TUIA::EndFrame()
+    {
+        fwrite(_frameBuffer.c_str(), 1, _frameBuffer.size(), stdout);
+        fflush(stdout);
+        _isFrameBuffering = false;
+        _frameBuffer.clear();
     }
 }

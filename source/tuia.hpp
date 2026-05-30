@@ -18,9 +18,15 @@ namespace usm::graphics
     {
         static ForegroundColor _foregroundColor;
         static BackgroundColor _backgroundColor;
+        static bool _isFrameBuffering;
+        static std::string _frameBuffer;
 
         static std::string ColorCode();
         static std::string PointCode(const Point& position);
+        /**
+         * @brief Write data to stdout, or to the frame buffer when BeginFrame() is active.
+         */
+        static void Write(const std::string& data);
     public:
         /**
          * @brief Create a string representation (ASCII code) for specified colors.
@@ -174,6 +180,17 @@ namespace usm::graphics
          * @brief Flush output buffer.
          */
         static void Flush();
+        /**
+         * @brief Start accumulating all draw calls into an internal frame buffer.
+         * Call EndFrame() to flush the buffer to the screen in one atomic write,
+         * eliminating flicker in animation loops.
+         */
+        static void BeginFrame();
+        /**
+         * @brief Flush the accumulated frame buffer to the screen.
+         * Must be paired with a preceding BeginFrame() call.
+         */
+        static void EndFrame();
     };
 }
 

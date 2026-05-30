@@ -66,9 +66,11 @@ int main()
 
     for (int i = 0; i < slides.size(); i++)
     {
+        TUIA::BeginFrame();
         TUIA::Draw(textImage);
         TUIA::Draw(slides[i]);
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        TUIA::EndFrame();
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
     return 0;
 }
