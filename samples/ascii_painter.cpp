@@ -189,7 +189,7 @@ public:
         std::string filename = "image_" + std::to_string(std::time(0)) + ".txt";
         try
         {
-            image.Save(filename + ".txt");
+            image.Save(filename);
             TUIA::WriteLine({1, width + 3}, "Image saved to " + filename);
         }
         catch (const std::exception &e)
